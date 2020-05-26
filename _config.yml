@@ -23,7 +23,7 @@ email: blog@vikki.in
 description: >- # this means to ignore newlines until "baseurl:"
   Linux, Opensource, Electronics and Photography
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://gitblog.vikki.in" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: r_vignesh88
 github_username:  vignesh88
 
