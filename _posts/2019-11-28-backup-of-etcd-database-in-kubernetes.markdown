@@ -19,12 +19,14 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 
 Kubernetes cluster have all the certificates saved in the defautl path /etc/kubernetes/pki. Take the backup of all the files and save it in the backup directory
 
+{% highlight console %}
+
+vikki@kubernetes1:~$ mkdir backup 
+vikki@kubernetes1:~$ cd backup/
+{% endhighlight %}
+
+
 <!--kg-card-begin: code-->
-
-    vikki@kubernetes1:~$ mkdir backup 
-    vikki@kubernetes1:~$ cd backup/
-
-<!--kg-card-end: code--><!--kg-card-begin: code-->
 
     vikki@kubernetes1:~/backup$ sudo cp -rvf /etc/kubernetes/pki .
     '/etc/kubernetes/pki' -> './pki'

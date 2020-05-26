@@ -25,63 +25,63 @@ Docker host machine: `fedora25.vikki.in`
 
 _Step 1: Set fully qualified hostname_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     #vim /etc/hostname
     freeipa.vikki.in
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 2: Set local resolver for the hostname_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     #vim /etc/hosts
     10.0.0.1 freeipa.vikki.in freeipa
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 3: Disable selinux(optional)_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     #vim /etc/sysconfig/selinux
     SELINUX=disabled
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 4: Reboot server_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # reboot
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 5: Verify hostname and selinux_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     #hostname
     freeipa.vikki.in
     #getenforce
     Disabled
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 6: Install ipa server_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 7: Configure FreeIPA_
 
 If you have a separate DNS server for managing the domain remove the option(--setup-dns)
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # ipa-server-install --setup-dns
     Existing BIND configuration detected, overwrite? [no]: yes
@@ -307,11 +307,11 @@ If you have a separate DNS server for managing the domain remove the option(--se
     This file is required to create replicas. The password for this
     file is the Directory Manager password
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 8: Configure firewall_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     #firewall-cmd --permanent --add-service=ntp
     #firewall-cmd --permanent --add-service=http
@@ -321,31 +321,31 @@ _Step 8: Configure firewall_
     #firewall-cmd --permanent --add-service=kerberos
     #firewall-cmd --permanent --add-service=kpasswd
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Either add all the above rules in firewall or simply flush all rules from iptables(not recommended in production)
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # iptables -F
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 9: Get Kerberos tickets_  
 Now the FreeIPA server is ready , we should generate the kerberos ticket with admin privilege. This kerberos ticket is needed to run any IPA commands in server with full privileges and to connect web UI.
 
 Kerberos provides authentication services for entire FreeIPA components.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     #kinit admin
     Password for admin@VIKKI.IN:# IPA admin password
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 We can also view the current Kerberos ticket with expiry details using the klist command. The default expiry period is 24hours.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # klist
     Ticket cache: KEYRING:persistent:0:0
@@ -353,17 +353,17 @@ We can also view the current Kerberos ticket with expiry details using the klist
     Valid starting Expires Service principal
     08/09/2016 14:45:53 11/09/2016 14:45:50 krbtgt/ADMIN@VIKKI.IN
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _step 10: Enabled home directory and default shell_  
 We have to enable the home directory creation and default login shell for the new user login. Run the below command to set it.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # ipa config-mod --defaultshell=/bin/bash
     # authconfig --enablemkhomedir --update
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 11: Login to freeipa web_  
 Login to the freeIPA server from the browser and create some users.
@@ -373,12 +373,12 @@ Login to the freeIPA server from the browser and create some users.
 _Step 12: Add dns entry for the IPA client_  
 Now the user has been created , we can configure the dns record for the new clients to be added under domain vikki.in
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # ipa dnsrecord-add vikki.in client01 --a-rec 10.0.0.2
     IPA Client
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### FreeIPA client Installation and Configuration
 
 _Step 1: Freeipa client preparation_
@@ -390,17 +390,17 @@ For all the above follow the same procedure followed in FreeIPA server preparati
 
 _Step 2: Set DNS server IP to FreeIPA server_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # vim /etc/resolv.conf
     nameserver 10.0.0.1
     #dig client01.vikki.in
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 3: Install ipa client_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # yum -y install ipa-client
     Discovery was successful!
@@ -428,11 +428,11 @@ _Step 3: Install ipa client_
     Configured /etc/ssh/sshd_config
     Client configuration complete.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 _Step 4: Try to login using the user created from the FreeIPA server GUI_
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # ssh vivek@client01.vikki.in
     Password: 
@@ -444,16 +444,16 @@ _Step 4: Try to login using the user created from the FreeIPA server GUI_
     Last login: Fri Jan 19 18:44:31 2018 from localhost
     #
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     # pwd
     /home/vivek
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 If you have not enabled the home directory creation and login shell , you will get the below output.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     # ssh vivek@client01.vikki.in
     Password: 
@@ -465,7 +465,7 @@ If you have not enabled the home directory creation and login shell , you will g
     -sh-4.2$ 
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### FreeIPA in Docker container
 
 FreeIPA is also available as a docker container. We can download the FreeIPA repository from github [master.zip](https://github.com/freeipa/freeipa-container/archive/master.zip).
@@ -476,7 +476,7 @@ Download the zip file, extract it , go inside the directory and run the docker b
 
 This repository has "Dockerfile" which supports many operation system, use the one you required. Here i am installing the container in Fedora27 , so i passing the respective dockerfile using "-f" option.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 freeipa-container-master]# docker build -t freeipa-server -f Dockerfile.fedora-27 .
     Sending build context to Docker daemon 161.3 kB
@@ -850,11 +850,11 @@ This repository has "Dockerfile" which supports many operation system, use the o
     Removing intermediate container bf4fb0f57293
     Successfully built e17fec1f8cf2
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Once the repository is build, we can verify the images in docker.The docker image we created is `freeipa-server` showing below
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 freeipa-container-master]# docker images
     REPOSITORY TAG IMAGE ID CREATED SIZE
@@ -862,27 +862,27 @@ Once the repository is build, we can verify the images in docker.The docker imag
     registry.fedoraproject.org/fedora 27 9881e4229c95 47 hours ago 252 MB
     docker.io/freeipa/freeipa-server latest c1ab4ccd4cbc 7 days ago 795 MB
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 #### How to run the FreeIPA docker container
 
 Now before running the container. Create a directory(used as a volume in docker instance) and set the necessary permission
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 freeipa-container-master]# mkdir /var/lib/ipa-data
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@fedora25 freeipa-container-master]# setsebool -P container_manage_cgroup 1
     [root@fedora25 freeipa-container-master]# chmod 777 /var/lib/ipa-data
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 If you need to access the docker container outside the host, you should map the container ports with host ports using option -p 53:53/udp -p 53:53 -p 80:80 -p 443:443 -p 389:389 -p 636:636 -p 88:88 -p 464:464 -p 88:88/udp -p 464:464/udp -p 123:123/udp -p 7389:7389 -p 9443:9443 -p 9444:9444 -p 9445:9445. But here of for testing i am doing the default install
 
 Now start run the docker
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 freeipa-container-master]# docker run --name freeipa-server-container -ti -h freeipa.vikki.in -v /sys/fs/cgroup:/sys/fs/cgroup:ro --tmpfs /run --tmpfs /tmp -v /var/lib/ipa-data:/data:Z freeipa-server
     systemd 234 running in system mode. (+PAM +AUDIT +SELINUX +IMA -APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD -IDN2 +IDN default-hierarchy=hybrid)
@@ -1063,33 +1063,31 @@ Now start run the docker
     Removed /etc/systemd/system/container-ipa.target.wants/ipa-server-configure-first.service.
     FreeIPA server configured.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now the FreeIPA docker container is ready. Verify the status of running container.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 ~]# docker ps -a
     CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
-    30667326bf93 freeipa-server "/usr/local/sbin/init" 45 minutes ago Up 44 minutes 53/tcp, 80/tcp, 53/udp, 88/udp, 88/tcp, 389/tcp, 443/tcp, 123/udp, 464/tcp, 636/tcp, 7389/tcp, 9443-9445/tcp, 464/udp freeipa-server-container
-
-<!--kg-card-end: code-->
+{% endhighlight %}
 #### How to enroll the host to FreeIPA running in container
 
 We can also enroll the host to FreeIPA server running in container.Since i don't have DNS configured, i manually added the FreeIPA docker container IP to the local resolver file in host machine.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 ~]# docker inspect --format '{{ .NetworkSettings.IPAddress }}' 1freeipa-server-container
     172.17.0.2
     [root@fedora25 ~]# cat /etc/hosts |grep freeipa
     172.17.0.2 freeipa.vikki.in
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now install the ipa client in fedora host machine.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 ~]# ipa-client-install 
     WARNING: ntpd time&date synchronization service will not be configured as
@@ -1148,7 +1146,7 @@ Now install the ipa client in fedora host machine.
     Client configuration complete.
     The ipa-client-install command was successful
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Once client is installed and authenticated to the FreeIPA server, we can verify the hosts by login to GUI as shown below
 
@@ -1156,10 +1154,10 @@ Once client is installed and authenticated to the FreeIPA server, we can verify 
 
 Verify the users are synced to the client.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@fedora25 ~]# id vivek
     uid=1661600001(vivek) gid=1661600001(vivek) groups=1661600001(vivek)
     [root@fedora25 ~]# 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
