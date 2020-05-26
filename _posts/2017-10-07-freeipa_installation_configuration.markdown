@@ -1065,12 +1065,11 @@ Now start run the docker
 
 {% endhighlight %}
 
-Now the FreeIPA docker container is ready. Verify the status of running container.
-
+Now the FreeIPA docker container is ready. Verify the status of running container
 {% highlight console %}
-
-    [root@fedora25 ~]# docker ps -a
+[root@fedora25 ~]# docker ps -a
     CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
+30667326bf93 freeipa-server "/usr/local/sbin/init" 45 minutes ago Up 44 minutes 53/tcp, 80/tcp, 53/udp, 88/udp, 88/tcp, 389/tcp, 443/tcp, 123/udp, 464/tcp, 636/tcp, 7389/tcp, 9443-9445/tcp, 464/udp freeipa-server-container
 {% endhighlight %}
 #### How to enroll the host to FreeIPA running in container
 
