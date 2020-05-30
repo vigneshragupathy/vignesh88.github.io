@@ -37,7 +37,7 @@ Now we have converted the wireshark output to arff so that it can be readable be
 
 For this, I opened the arff file and manually defined the class based on the application the traffic is generated
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     Traffic type	Application used
     http	browser
@@ -45,7 +45,7 @@ For this, I opened the arff file and manually defined the class based on the app
     bittorrent	peer-peer_client
     snmp	monitoring_tools
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 My final arff file is below, with the class name “Traffic\_category” added.  
 Now if you see closely, for some of the instances(5,31,35,53) the “Traffic\_category” class is left undefined.In the next step i am going to use weka to predict the class in which the instance belongs to using machine learning algorithm.
@@ -57,12 +57,12 @@ Now i am going to run the weka J48ext machine learning algorithm to predict the 
 
 Make sure the class path is properly exported before executing the code. In my setup the weka.jar is located inside “/usr/share/java”
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     export CLASSPATH=$CLASSPATH:/usr/share/java/weka.jar
     ~jython UsingJ48Ext.py main.arff
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 The code can be downloaded from [github](https://github.com/vignesh88/machine_learning/blob/master/weka/UsingJ48Ext.py)  
 The output contains 3 type of informations
@@ -71,7 +71,7 @@ The output contains 3 type of informations
 
 J48 pruned tree
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     Protocol = SNMP: monitoring_tools (10.0/1.0)
     Protocol = SRVLOC: telnet (0.0)
@@ -88,9 +88,9 @@ J48 pruned tree
     
     Size of the tree : 11
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### 2. Evaluation
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     Correctly Classified Instances 52 98.1132 %
     Incorrectly Classified Instances 1 1.8868 %
@@ -102,9 +102,9 @@ J48 pruned tree
     Total Number of Instances 53     
     Ignored Class Unknown Instances 4     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### 3. Prediction
-<!--kg-card-begin: code-->
+{% highlight console %}
 
          1 5:monitori 5:monitori 0.9 
          2 5:monitori 5:monitori 0.9 
@@ -131,12 +131,12 @@ J48 pruned tree
         53 1:? 1:browsers 1 
         54 1:browsers 1:browsers 1 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now the information provided in prediction is our focus.  
 It contains 4 column
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     Column number	Details
     First column	Instance number
@@ -144,7 +144,7 @@ It contains 4 column
     Third column	Class predicted by machine learning
     Fourth column	Probability that the instance is belong to the class predicted my machine
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now if you notice the instance number 5,31,35 and 53 the class defined in dataset is empty(“?”) and the machine has predicted the class as monitoring\_tool,peer-peer client and browser respectively. The “+” symbol in the instance number 45 denotes there is difference in the class defined in dataset and the class predicted by machine learning.
 

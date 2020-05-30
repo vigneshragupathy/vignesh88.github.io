@@ -26,7 +26,7 @@ vikki@kubernetes1:~$ cd backup/
 {% endhighlight %}
 
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~/backup$ sudo cp -rvf /etc/kubernetes/pki .
     '/etc/kubernetes/pki' -> './pki'
@@ -55,12 +55,12 @@ vikki@kubernetes1:~$ cd backup/
     '/etc/kubernetes/pki/sa.pub' -> './pki/sa.pub'
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 2: Download the etcdctl binary
 
 Download the etcdctl binary. I have created a shortlinks for the etcd-v3.2.28 which works in ubuntu16.04 and kubernetes v16.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~/backup$ wget shortlinks.vikki.in/etcd
     --2019-11-26 22:05:52-- http://shortlinks.vikki.in/etcd
@@ -84,16 +84,16 @@ Download the etcdctl binary. I have created a shortlinks for the etcd-v3.2.28 wh
     
     2019-11-26 22:05:57 (4.47 MB/s) - ‘etcd’ saved [10529149/10529149]
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~/backup$ ls
     etcd pki
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Extract the etcd package
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~/backup$ tar -xvf etcd
     etcd-v3.2.28-linux-amd64/
@@ -192,38 +192,38 @@ Extract the etcd package
     etcd-v3.2.28-linux-amd64/Documentation/metrics.md
     etcd-v3.2.28-linux-amd64/READMEv2-etcdctl.md
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Navigate to the extraced directory
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~/backup$ ls
     etcd etcd-v3.2.28-linux-amd64 pki
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~/backup$ cd etcd-v3.2.28-linux-amd64/
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 3: Backup the etcd database
 
 Now you will see a etcdctl binary inside the directy.
 
 Use the key, certificate and CA certificate to take backup of the existing etcd database as shown below
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~/backup/etcd-v3.2.28-linux-amd64$ sudo ETCDCTL_API=3 ./etcdctl --endpoints https://127.0.0.1:2379 --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key --cacert=/etc/kubernetes/pki/etcd/ca.crt snapshot save ../etc_database_backup.db
     Snapshot saved at ../etc_database_backup.db
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~/backup/etcd-v3.2.28-linux-amd64$ cd ..
     vikki@kubernetes1:~/backup$ ls
     etcd etc_database_backup.db etcd-v3.2.28-linux-amd64 pki
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the backup has been taken and saved as etc\_database\_backup.db
 

@@ -1,7 +1,8 @@
 ---
-layout: post
+layout: page
 title: Videos
 date: '2019-10-21 12:20:00'
+permalink: /videos/
 ---
 
 ### Kubernetes on Ubuntu 18.04 with master and dashboard setup

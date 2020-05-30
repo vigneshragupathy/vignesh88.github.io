@@ -16,20 +16,20 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 
 <!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="/content/images/2019/11/Screenshot-from-2019-11-23-11-56-54-1.png" class="kg-image"></figure><!--kg-card-end: image-->
 ### Step 1: Create a daemon set 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f ds.yaml 
     daemonset.apps/fluentd-elasticsearch created
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/467337d30e6018fae4d33af6d762f36d.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/467337d30e6018fae4d33af6d762f36d.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get ds
     NAME DESIRED CURRENT READY UP-TO-DATE AVAILABLE NODE SELECTOR AGE
     fluentd-elasticsearch 2 2 2 2 2 <none> 5s
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 2: Verify the image version and updateStrategy of the daemonset
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
@@ -46,19 +46,19 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > The daemonset has a image version of " **2.5.2"** and updateStrategy " **RollingUpdate**"
 
 ### Step 3: Update the daemon set container image to a different version say "2.5.2" 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl set image ds fluentd-elasticsearch fluentd-elasticsearch=quay.io/fluentd_elasticsearch/fluentd:v2.5.1
     daemonset.apps/fluentd-elasticsearch image updated
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### step 4 : Verify the image version is updated in daemonset level also in pod level
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
@@ -68,12 +68,12 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see , as soon as the daemonset image is updated , the pod image also gets updated. This is because of the updateStrategy set as **RollingUpdate**
 
 ### Step 5: Now lets change the updateStrategy to OnDelete and watch the behaviour
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml > ds_new.yaml 
     vikki@kubernetes1:~$ vim ds_new.yaml 
@@ -81,13 +81,13 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     
     
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/573453ca14d2e79e02f3cfe6c7a3ef20.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/573453ca14d2e79e02f3cfe6c7a3ef20.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl apply -f ds_new.yaml 
     Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
     daemonset.apps/fluentd-elasticsearch configured
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
@@ -103,12 +103,12 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > The udpate strategy is changed to **OnDelete** and the version in **2.5.2**
 
 ### Step 6: Lets change the image to different version
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl set image ds fluentd-elasticsearch fluentd-elasticsearch=quay.io/fluentd_elasticsearch/fluentd:v2.5.0
     daemonset.apps/fluentd-elasticsearch image updated
@@ -116,9 +116,9 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 7: Verify the image version in daemonset and pod
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.0
@@ -126,12 +126,12 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the image version on Daemonset is updated , but the pod is still running in the older version
 
 ### Step 8: Lets delete the pod and wait for the new pods to be created and verify the image version in new pod
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl delete pod fluentd-elasticsearch-
     fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57  
@@ -140,7 +140,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     pod "fluentd-elasticsearch-qh8n8" deleted
     pod "fluentd-elasticsearch-x2f57" deleted
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
     fluentd-elasticsearch-89g44 fluentd-elasticsearch-mf5f9  
@@ -151,7 +151,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-89g44 |grep Image:
         Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.0
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the version is automatically updated on the new pod only after delete.
 

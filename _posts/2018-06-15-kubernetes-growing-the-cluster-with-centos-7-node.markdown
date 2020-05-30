@@ -15,25 +15,25 @@ In my [previous post](/kubernetes-on-ubuntu-18-04-with-dashbaoard/#kubernetes-to
 
 Fist update the centos with all latest packages
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# yum update -y
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Install docker and enable in startup
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# yum install docker
     [root@drona-child-3 ~]# systemctl enable docker && systemctl start docker
     Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now add the kubernetes repository to yum configuration
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# cat <<EOF > /etc/yum.repos.d/kubernetes.repo
     > [kubernetes]
@@ -45,12 +45,12 @@ Now add the kubernetes repository to yum configuration
     > gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     > EOF
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Disable selinux. For permanant disable edit the file "/etc/sysconfig/selinux" &nbsp;otherwise the kube-flannel-xxx will goes to crashloop in next reboot.  
 After that install kubernetes packages and enable in startup.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# setenforce 0
     [root@drona-child-3 ~]# yum install -y kubelet kubeadm 
@@ -58,11 +58,11 @@ After that install kubernetes packages and enable in startup.
     Created symlink from /etc/systemd/system/multi-user.target.wants/kubelet.service to /etc/systemd/system/kubelet.service.
     [root@drona-child-3 ~]# 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Add the host entry for name resolution
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# cat /etc/hosts
     127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -71,15 +71,15 @@ Add the host entry for name resolution
     192.168.0.4 drona-child-3
     [root@drona-child-3 ~]# 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Disable swap
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# swapoff -a
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Till this step everything is same as we did in kubernetes master, except the difference of centos 7 operation system.
 
@@ -87,7 +87,7 @@ Till this step everything is same as we did in kubernetes master, except the dif
 
 Now join the node to the kubernetes master using the join command. We already seen in the [previous post](/kubernetes-on-ubuntu-18-04-with-dashbaoard/#kubernetes-token-generation) how to get the token and hash in case you didn't note it during master installation.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# kubeadm join 192.168.1.5:6443 --token o9an7t.o4bs1up74xjwnol3 --discovery-token-ca-cert-hash sha256:548c922cf4f845f3dc6d7da407516652879c8a5085c87e0322770e1475105591
     [preflight] Running pre-flight checks.
@@ -106,11 +106,11 @@ Now join the node to the kubernetes master using the join command. We already se
     
     Run 'kubectl get nodes' on the master to see this node join the cluster.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Check if the flannel interface is created and should have the pod network ip 40.168.x.x
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@drona-child-3 ~]# ip a show flannel.1
     5: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default 
@@ -121,13 +121,13 @@ Check if the flannel interface is created and should have the pod network ip 40.
            valid_lft forever preferred_lft forever
     [root@drona-child-3 ~]# 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Since cluster and authentication keys(~/.kube/config) not configured in secondary nodes(drona-child-3) we cannot run kubectl get nodes in secondary.
 
 We have to do all the orchestration activity from the master node. I am connecting to the master node and checking the nodes status
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl get nodes
     NAME STATUS ROLES AGE VERSION
@@ -135,12 +135,12 @@ We have to do all the orchestration activity from the master node. I am connecti
     drona-child-3 Ready <none> 1m v1.10.4
     vikki@drona-child-1:~$ 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Creating deployment in kubernetes cluster
 
 Let try deploying a pod. I am using nginx server. The below command will automatically pull the nginx image from the docker hub and deploy it as pod.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl run nginx --image nginx
     deployment.apps "nginx" created
@@ -148,21 +148,21 @@ Let try deploying a pod. I am using nginx server. The below command will automat
     NAME READY STATUS RESTARTS AGE
     nginx-65899c769f-nllp5 1/1 Running 0 5m
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now we can see the deployment "nginx" is created.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl get deployments
     NAME DESIRED CURRENT UP-TO-DATE AVAILABLE AGE
     nginx 1 1 1 0 2s
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 To see more details about the deployment , use the describe command
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl describe deployment nginx 
     Name: nginx
@@ -198,12 +198,12 @@ To see more details about the deployment , use the describe command
       Normal ScalingReplicaSet 9m deployment-controller Scaled up replica set nginx-65899c769f to 1
     vikki@drona-child-1:~$ 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Scaling the pods
 
 Now let scale the pod to 3 replica
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl scale deployment nginx --replicas=3
     deployment.extensions "nginx" scaled
@@ -211,11 +211,11 @@ Now let scale the pod to 3 replica
     NAME DESIRED CURRENT UP-TO-DATE AVAILABLE AGE
     nginx 3 3 3 3 46m
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 List the pods and verify it.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl get pod -o wide
     NAME READY STATUS RESTARTS AGE IP NODE
@@ -225,11 +225,11 @@ List the pods and verify it.
     vikki@drona-child-1:~$ 
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now delete one of the pod and see if it is automatically scaling up to 3
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl delete pod nginx-768979984b-vm74x 
     pod "nginx-768979984b-vm74x" deleted
@@ -241,7 +241,7 @@ Now delete one of the pod and see if it is automatically scaling up to 3
     nginx-768979984b-vm74x 0/1 Terminating 0 18m <none> drona-child-3
     vikki@drona-child-1:~$ 
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@drona-child-1:~$ kubectl get pod -o wide
     NAME READY STATUS RESTARTS AGE IP NODE
@@ -250,4 +250,4 @@ Now delete one of the pod and see if it is automatically scaling up to 3
     nginx-768979984b-mmgbj 1/1 Running 0 6m 40.168.1.4 drona-child-3
     vikki@drona-child-1:~$ 
 
-<!--kg-card-end: code-->
+{% endhighlight %}

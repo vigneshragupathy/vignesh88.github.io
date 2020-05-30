@@ -18,19 +18,19 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Master node
 
 ##### Step 1: Verify the current version of kubelet and kubeadm running in all nodes
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get nodes
     NAME STATUS ROLES AGE VERSION
     kubernetes1 Ready master 41d v1.15.5
     kubernetes2 Ready <none> 41d v1.15.5
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubeadm version
     kubeadm version: &version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.5", GitCommit:"20c265fef0741dd71a66480e35bd69f18351daea", GitTreeState:"clean", BuildDate:"2019-10-15T19:14:19Z", GoVersion:"go1.12.10", Compiler:"gc", Platform:"linux/amd64"}
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see kubelet and kubeadm is running in version v1.15.5
 
@@ -38,11 +38,11 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 
 Run the update in kubernetes master node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes1:~# apt update
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     root@kubernetes1:~# apt-cache policy kubeadm
     kubeadm:
@@ -51,7 +51,7 @@ Run the update in kubernetes master node
       Version table:
       .....
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see from this output that current version is 1.15.5 and the latest available is 1.16.3
 
@@ -59,7 +59,7 @@ Run the update in kubernetes master node
 
 Upgrade the kubeadm in master to the latest version 1.16.3
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes1:~# apt-mark unhold kubeadm && \
     > apt-get update && apt-get install -y kubeadm=1.16.3-00 && \
@@ -87,12 +87,12 @@ Upgrade the kubeadm in master to the latest version 1.16.3
     Setting up kubeadm (1.16.3-00) ...
     kubeadm set on hold.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 4: Run the upgrade plan
 
 Now in the previous step we already updated the kubeadm to latest version. Now lets run the upgrade plan and see the available options.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes1:~# sudo kubeadm upgrade plan
     [upgrade/config] Making sure the configuration is correct:
@@ -146,7 +146,7 @@ Now in the previous step we already updated the kubeadm to latest version. Now l
     
     _____________________________________________________________________
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see that we can upgrade the cluster to v1.16.3 from the above output
 
@@ -154,7 +154,7 @@ Now in the previous step we already updated the kubeadm to latest version. Now l
 
 Now drain all the pods execpt daemonsets in the master node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl drain kubernetes1 --ignore-daemonsets
     node/kubernetes1 cordoned
@@ -165,12 +165,12 @@ Now drain all the pods execpt daemonsets in the master node
     pod/coredns-5c98db65d4-g4gv4 evicted
     node/kubernetes1 evicted
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 6: Run the upgrade
 
 Now run the upgrade to the lastest version 1.16.3
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ sudo kubeadm upgrade apply v1.16.3
     [upgrade/config] Making sure the configuration is correct:
@@ -263,7 +263,7 @@ Now run the upgrade to the lastest version 1.16.3
     
     [upgrade/kubelet] Now that your control plane is upgraded, please proceed with upgrading your kubelets if you haven't already done so.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see the cluster is upgraded to lastest version v1.16.3
 
@@ -271,17 +271,17 @@ Now run the upgrade to the lastest version 1.16.3
 
 Now ucordon the master node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl uncordon kubernetes1 
     node/kubernetes1 uncordoned
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 8: Upgrade the kubelet 
 
 Now in the previous steps we have upgraded the kubeadm and cluster , next we need to upgrade the kubelet and kubectl
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes1:~# apt-mark unhold kubelet kubectl && \
     > apt-get update && apt-get install -y kubelet=1.16.3-00 kubectl=1.16.3-00 && \
@@ -315,29 +315,29 @@ Now in the previous steps we have upgraded the kubeadm and cluster , next we nee
     kubelet set on hold.
     kubectl set on hold.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Restart the kubelet service
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes1:~# sudo systemctl restart kubelet
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get nodes
     NAME STATUS ROLES AGE VERSION
     kubernetes1 Ready master 41d v1.16.3
     kubernetes2 Ready <none> 41d v1.15.5
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the master node kubernetes1 is upgraded to v1.16.3
 
 ### Worker node
 
 ##### Step 1: Upgrade the kubeadm to version 1.16.3
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes2:~# apt-mark unhold kubeadm && \
     > apt-get update && apt-get install -y kubeadm=1.16.3-00 && \
@@ -383,12 +383,12 @@ Restart the kubelet service
     Setting up kubeadm (1.16.3-00) ...
     kubeadm set on hold.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 2: Drain the pods in worker node
 
 Now drain all the pods , except daemonsets from the worker node kubernetes2. _This command should be run in master node in case the kubenetes config is not mapped in worker_.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl drain kubernetes2 --ignore-daemonsets
     node/kubernetes2 cordoned
@@ -403,9 +403,9 @@ Now drain all the pods , except daemonsets from the worker node kubernetes2. _Th
     pod/nginx-7bffc778db-phdb5 evicted
     node/kubernetes2 evicted
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 3: Upgrade the worker node
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes2:~# sudo kubeadm upgrade node
     [upgrade] Reading configuration from the cluster...
@@ -415,12 +415,12 @@ Now drain all the pods , except daemonsets from the worker node kubernetes2. _Th
     [upgrade] The configuration for this node was successfully updated!
     [upgrade] Now you should go ahead and upgrade the kubelet package using your package manager.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 4: Upgrade the kubelet and kubectl
 
 In previous steps we upgraded the kubeadm and cluster. Now we need to upgrade the kubelet and kubectl.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes2:~# apt-mark unhold kubelet kubectl && \
     > apt-get update && apt-get install -y kubelet=1.16.3-00 kubectl=1.16.3-00 && \
@@ -454,32 +454,32 @@ In previous steps we upgraded the kubeadm and cluster. Now we need to upgrade th
     kubelet set on hold.
     kubectl set on hold.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Restart the kubelet service in worker node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes2:~# sudo systemctl restart kubelet
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 5: Uncordon the worker node
 
 Now uncordon all the pods in kubernetes2 worker onde
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl uncordon kubernetes2
     node/kubernetes2 uncordoned
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get nodes
     NAME STATUS ROLES AGE VERSION
     kubernetes1 Ready master 41d v1.16.3
     kubernetes2 Ready <none> 41d v1.16.3
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see now both the master and worker nodes are upgraded from v1.15.5 to v1.16.3
 

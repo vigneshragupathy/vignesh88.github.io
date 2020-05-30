@@ -24,16 +24,16 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Using nodeName
 
 ##### Step 1: Create a pod and assign using nodeName
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_node_name.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/5f329160b5846ba72beba94bd46f8860.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/5f329160b5846ba72beba94bd46f8860.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl apply -f pod_node_name.yaml 
     pod/nginx-pod-nodename created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pods -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
@@ -43,7 +43,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     web-1 1/1 Running 2 5h21m 192.168.249.140 kubernetes2 <none> <none>
     web-2 1/1 Running 2 5h22m 192.168.249.138 kubernetes2 <none> <none>
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the pod is created in the node "kubernetes3" conifgued in nodeName option
 
@@ -56,7 +56,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 
 Check the current lables using the below command
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get nodes --show-labels 
     NAME STATUS ROLES AGE VERSION LABELS
@@ -64,11 +64,11 @@ Check the current lables using the below command
     kubernetes2 Ready <none> 20d v1.16.2 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=kubernetes2,kubernetes.io/os=linux
     kubernetes3 Ready <none> 117m v1.16.3 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=kubernetes3,kubernetes.io/os=linux,namee=node3
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Add a new lable "disktype=vhd" to the kubernetes3 node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl label nodes kubernetes3 disktype=vhd
     node/kubernetes3 labeled
@@ -79,18 +79,18 @@ Add a new lable "disktype=vhd" to the kubernetes3 node
     kubernetes2 Ready <none> 20d v1.16.2 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=kubernetes2,kubernetes.io/os=linux
     kubernetes3 Ready <none> 118m v1.16.3 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,disktype=vhd,kubernetes.io/arch=amd64,kubernetes.io/hostname=kubernetes3,kubernetes.io/os=linux,namee=node3
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 2: Create a pod and assign using nodeSelector
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_label.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/dc26cbe554bd78b4e17103bcd96d153f.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/dc26cbe554bd78b4e17103bcd96d153f.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f pod_label.yaml 
     pod/nginx-pod-label created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pods -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
@@ -101,7 +101,7 @@ Add a new lable "disktype=vhd" to the kubernetes3 node
     web-2 1/1 Running 2 4h25m 192.168.249.138 kubernetes2 <none> <none>
     vikki@kubernetes1:~$ 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the new pod is assinged to kubernetes3 based on nodeSelector label option
 
@@ -133,16 +133,16 @@ Affinity operators:
 
 Create a pod with node affinity specs and match the lable using matchExpressions spec
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_node_affinity.yaml 
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/704e4a3ce125a5e66b5b754f9edcd874.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/704e4a3ce125a5e66b5b754f9edcd874.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f pod_node_affinity.yaml 
     pod/nginx-pod-nodeaffinity created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pods
     NAME READY STATUS RESTARTS AGE
@@ -153,7 +153,7 @@ Create a pod with node affinity specs and match the lable using matchExpressions
     web-1 1/1 Running 2 4h52m
     web-2 1/1 Running 2 4h52m
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe pods nginx-pod-nodeaffinity |grep Events: -A 3
     Events:
@@ -162,18 +162,18 @@ Create a pod with node affinity specs and match the lable using matchExpressions
       Warning FailedScheduling <unknown> default-scheduler 0/3 nodes are available: 3 node(s) didn't match node selector.
      
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now the pod is failing because there is no node has the match lables
 
 Lets add a label bandwidth to the kubernetes3 node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl label nodes kubernetes3 bandwidth=100GB
     node/kubernetes3 labeled
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe pods nginx-pod-nodeaffinity |grep Events: -A 5
     Events:
@@ -183,7 +183,7 @@ Lets add a label bandwidth to the kubernetes3 node
       Warning FailedScheduling <unknown> default-scheduler 0/3 nodes are available: 3 node(s) didn't match node selector.
       Normal Scheduled <unknown> default-scheduler Successfully assigned default/nginx-pod-nodeaffinity to kubernetes3
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pods -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
@@ -195,7 +195,7 @@ Lets add a label bandwidth to the kubernetes3 node
     web-2 1/1 Running 2 4h59m 192.168.249.138 kubernetes2 <none> <none>
     
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the node pod is successully assinged to the kubernetes3 node after adding the label
 
@@ -210,16 +210,16 @@ We can also assing the pod to a specific node using the pod affinity and anti af
 
 Create a pod with pod affinity specs and match the lable using matchExpressions spec
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_pod_affinity.yaml 
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/a4048e59449210e28e4bf66971c8d56a.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/a4048e59449210e28e4bf66971c8d56a.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f pod_pod_affinity.yaml 
     pod/nginx-pod-podaffinity created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pods
     NAME READY STATUS RESTARTS AGE
@@ -231,7 +231,7 @@ Create a pod with pod affinity specs and match the lable using matchExpressions 
     web-1 1/1 Running 2 5h10m
     web-2 1/1 Running 2 5h11m
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe pods nginx-pod-podaffinity |grep Events: -A 5 
     Events:
@@ -240,22 +240,22 @@ Create a pod with pod affinity specs and match the lable using matchExpressions 
       Warning FailedScheduling <unknown> default-scheduler 0/3 nodes are available: 1 node(s) had taints that the pod didn't tolerate, 2 node(s) didn't match pod affinity rules, 2 node(s) didn't match pod affinity/anti-affinity.
       Warning FailedScheduling <unknown> default-scheduler 0/3 nodes are available: 1 node(s) had taints that the pod didn't tolerate, 2 node(s) didn't match pod affinity rules, 2 node(s) didn't match pod affinity/anti-affinity.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now the pod is failing because there is no pod running in any nodes that &nbsp;has the match lables
 
 Lets create a new pod with the label configued previously
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_label_podaffinity.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/09965427e66db5bc14443f49f2ed2a9d.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/09965427e66db5bc14443f49f2ed2a9d.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl apply -f pod_label_podaffinity.yaml 
     pod/nginx-pod-web-nginx-backend created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe pods nginx-pod-podaffinity |grep Events: -A 5 
     Events:
@@ -265,7 +265,7 @@ Lets create a new pod with the label configued previously
       Warning FailedScheduling <unknown> default-scheduler 0/3 nodes are available: 1 node(s) had taints that the pod didn't tolerate, 2 node(s) didn't match pod affinity rules, 2 node(s) didn't match pod affinity/anti-affinity.
       Normal Scheduled <unknown> default-scheduler Successfully assigned default/nginx-pod-podaffinity to kubernetes3
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pods -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
@@ -278,7 +278,7 @@ Lets create a new pod with the label configued previously
     web-1 1/1 Running 2 5h13m 192.168.249.140 kubernetes2 <none> <none>
     web-2 1/1 Running 2 5h14m 192.168.249.138 kubernetes2 <none> <none>
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see only the pod with lable app: web-nginx-backend is created, the previous pod is also created in the same node
 
@@ -290,7 +290,7 @@ Lets create a new pod with the label configued previously
 Node affinity is a property of pods that attracts them to a set of nodes. Taints are the opposite, they allow a node to repel a set of pods.
 
 ##### Step 1: Create a label to node and assign pod using nodeSelector
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl label nodes kubernetes4 app=highperformance
     node/kubernetes4 labeled
@@ -298,22 +298,22 @@ Node affinity is a property of pods that attracts them to a set of nodes. Taints
     NAME STATUS ROLES AGE VERSION LABELS
     kubernetes4 Ready <none> 2m55s v1.16.3 app=highperformance,beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=kubernetes4,kubernetes.io/os=linux
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_label_1.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/fb98260bd5405feee85ca565b188933b.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/fb98260bd5405feee85ca565b188933b.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f pod_label_1.yaml 
     pod/nginx-pod-taint created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod nginx-pod-taint -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
     nginx-pod-taint 1/1 Running 0 10m 192.168.48.129 kubernetes4 <none> <none>
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see the new pod nginx-pod-taint is created and assigned to kubernetes4 node
 
@@ -321,7 +321,7 @@ Node affinity is a property of pods that attracts them to a set of nodes. Taints
 
 Now lets create a taint "NoSchedule" and add to the kubernetes4 node.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl taint nodes kubernetes4 key1=value1:NoSchedule
     node/kubernetes4 tainted
@@ -332,27 +332,27 @@ Now lets create a taint "NoSchedule" and add to the kubernetes4 node.
         key: key1
         value: value1
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 3: Create a new pod and try assign to kubernetes4
 
 Now create a new pod and use nodeSelector to assign to kubernetes4
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_label_2.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/4da565b636ec481e4f6e5147b2419a93.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/4da565b636ec481e4f6e5147b2419a93.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f pod_label_2.yaml 
     pod/nginx-pod-taint-2 created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     ikki@kubernetes1:~$ kubectl get pods nginx-pod-taint-2 -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
     nginx-pod-taint-2 0/1 Pending 0 7s <none> <none> <none> <none>
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe pod nginx-pod-taint-2 |grep -i events: -A 5
     Events:
@@ -361,7 +361,7 @@ Now create a new pod and use nodeSelector to assign to kubernetes4
       Warning FailedScheduling <unknown> default-scheduler 0/4 nodes are available: 1 node(s) had taints that the pod didn't tolerate, 3 node(s) didn't match node selector.
       Warning FailedScheduling <unknown> default-scheduler 0/4 nodes are available: 1 node(s) had taints that the pod didn't tolerate, 3 node(s) didn't match node selector.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see the pod creatation if failing due to the taints setting.
 
@@ -369,17 +369,17 @@ Now create a new pod and use nodeSelector to assign to kubernetes4
 
 Now lets add toleration to the same pod for "NoSchedule" and apply the changes.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ vim pod_label_3.yaml 
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/5790929db238b9276d4961d3a91e6a29.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/5790929db238b9276d4961d3a91e6a29.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl apply -f pod_label_3.yaml 
     Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
     pod/nginx-pod-taint-2 configured
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl describe pod nginx-pod-taint-2 |grep -i events: -A 5
     Events:
@@ -389,13 +389,13 @@ Now lets add toleration to the same pod for "NoSchedule" and apply the changes.
       Warning FailedScheduling <unknown> default-scheduler 0/4 nodes are available: 1 node(s) had taints that the pod didn't tolerate, 3 node(s) didn't match node selector.
       Normal Scheduled <unknown> default-scheduler Successfully assigned default/nginx-pod-taint-2 to kubernetes4
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod nginx-pod-taint-2 -o wide
     NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
     nginx-pod-taint-2 1/1 Running 0 11m 192.168.48.130 kubernetes4 <none> <none>
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see the pod changed from failed to success state and assinged to kubernetes4 node according to the nodeSelector.
 

@@ -20,10 +20,11 @@
 
 title: Vikki's blog
 email: blog@vikki.in
+tagline: Linux, Opensource, Electronics and Photography
 description: >- # this means to ignore newlines until "baseurl:"
-  Linux, Opensource, Electronics and Photography
+  My blog on Linux, Opensource, Electronics and Photography
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://gitblog.vikki.in" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://www.vikki.in" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: r_vignesh88
 github_username:  vignesh88
 
@@ -32,6 +33,8 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-paginate
+  - jekyll-seo-tag
+  - jekyll-redirect-from
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -58,9 +61,22 @@ permalink: :title/
 disqus:
     # Leave shortname blank to disable comments site-wide.
     # Disable comments for any post by adding `comments: false` to that post's YAML Front Matter.
-    shortname: gitblog-vikki-in
+    shortname: vikkiblog
 author: "Vignesh Ragupathy"
-favicon: "/content/images/favicon/favicon.ico"
+website: https://www.vikki.in
+google_analytics: UA-75997179-1
+show_excerpts: true
+header_pages:
+  - pages/about-me.markdown
+  - pages/tools.markdown
+  - pages/videos.markdown
 paginate: 5
 paginate_path: /page:num/
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    default_lang: html
+    css_class   : 'syntax'
 

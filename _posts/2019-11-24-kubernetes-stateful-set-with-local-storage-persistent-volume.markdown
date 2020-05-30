@@ -18,17 +18,17 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 
 <!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="/content/images/2019/11/setup.jpg" class="kg-image"></figure><!--kg-card-end: image-->
 ##### Step 1: Create a persistentVolume and persistemVolumeClaim
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vim pv.yaml
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
-<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/b0fdde697229f150740a079b77458d64.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/b0fdde697229f150740a079b77458d64.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vim pv_claim.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/5f9f6acb132e499ccb80523b170dc815.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/5f9f6acb132e499ccb80523b170dc815.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f pv.yaml 
     persistentvolume/vikki-pv-volume created
@@ -36,7 +36,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     vikki@kubernetes1:~$ kubectl create -f pv_claim.yaml 
     persistentvolumeclaim/vikki-pv-volume-claim created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pvc
     NAME STATUS VOLUME CAPACITY ACCESS MODES STORAGECLASS AGE
@@ -46,7 +46,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     NAME CAPACITY ACCESS MODES RECLAIM POLICY STATUS CLAIM STORAGECLASS REASON AGE
     vikki-pv-volume 1Gi RWO Retain Bound default/vikki-pv-volume-claim local-storage 9s
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 2: Create a statefulSets
 
 Create a statefulSets and map the PVC created in previous steps. The statefull set consist of the following. -
@@ -54,22 +54,22 @@ Create a statefulSets and map the PVC created in previous steps. The statefull s
 - Headless service
 - StatefulSets with container details
 - Persistent Volumes 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vim ss.yaml
 
-<!--kg-card-end: code--><!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/d04c1473a6dacc90fcc8af2946b54b92.js"></script><!--kg-card-end: html--><!--kg-card-begin: code-->
+{% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/d04c1473a6dacc90fcc8af2946b54b92.js"></script><!--kg-card-end: html-->{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create -f ss.yaml 
     service/nginx created
     statefulset.apps/web created
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 3: Verify statefulSets
 
 Now we can see the statefulsets are created and the respecive pod is created with a sequential unique id.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get statefulsets.apps 
     NAME READY AGE
@@ -80,17 +80,17 @@ Now we can see the statefulsets are created and the respecive pod is created wit
     web-0 1/1 Running 0 15m
     web-1 1/1 Running 0 15m
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ##### Step 4: Verify the DNS for statefulSets
 
 Create a temporary busybox pod and test the dns resolution for each statefulSet pods based on the pod and stateful set name.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl apply -f https://k8s.io/examples/admin/dns/busybox.yaml
     pod/busybox created
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     root@kubernetes2:~# docker ps -a |grep busybox
     8e3ba8c16f3e busybox "sleep 3600" 21 seconds ago Up 20 seconds k8s_busybox_busybox_default_454e3e1c-1b41-4f6e-a244-6d89cd8c8379_0
@@ -119,7 +119,7 @@ Create a temporary busybox pod and test the dns resolution for each statefulSet 
     round-trip min/avg/max = 0.227/0.241/0.256 ms
     / # 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we can see both the statefulSets pods resolves for &nbsp;dns.
 
@@ -127,14 +127,14 @@ Create a temporary busybox pod and test the dns resolution for each statefulSet 
 
 We can try deleting some pods and see how the new pods are creating
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl delete pod -l app=nginx
     pod "web-0" deleted
     pod "web-1" deleted
     vikki@kubernetes1:~$ 
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod -w -l app=nginx
     NAME READY STATUS RESTARTS AGE
@@ -160,7 +160,7 @@ We can try deleting some pods and see how the new pods are creating
     web-1 1/1 Running 0 1s
     ^Cvikki@kubernetes1:~$ 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see the pod are creating in ascending order preserving the sequence status
 
@@ -168,12 +168,12 @@ We can try deleting some pods and see how the new pods are creating
 
 Now lets scale up and scale down the statefulset and watch the order of pod creation and deletion
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl scale statefulset --replicas=5 web 
     statefulset.apps/web scaled
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod -w -l app=nginx
     NAME READY STATUS RESTARTS AGE
@@ -195,12 +195,12 @@ Now lets scale up and scale down the statefulset and watch the order of pod crea
     web-4 0/1 ContainerCreating 0 2s
     web-4 1/1 Running 0 3s
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl scale statefulset --replicas=3 web 
     statefulset.apps/web scaled
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod -w -l app=nginx
     NAME READY STATUS RESTARTS AGE
@@ -218,7 +218,7 @@ Now lets scale up and scale down the statefulset and watch the order of pod crea
     web-3 0/1 Terminating 0 58s
     web-3 0/1 Terminating 0 58s
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see from the above output the sequential order is preserved
 
@@ -226,7 +226,7 @@ Now lets scale up and scale down the statefulset and watch the order of pod crea
 
 Now lets update the image in the statefulset and watch for the pod creation and deletion
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get statefulsets.apps web -o yaml |grep updateStrategy -A 3
       updateStrategy:
@@ -235,18 +235,18 @@ Now lets update the image in the statefulset and watch for the pod creation and 
         type: RollingUpdate
     vikki@kubernetes1:~$ 
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Current statefulsets has the updatestrategy of type "_RollingUpdate_"
 
 Lets modify the container image to a different version
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl set image statefulset web nginx=k8s.gcr.io/nginx-slim:0.9
     statefulset.apps/web image updated
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get pod -w -l app=nginx
     NAME READY STATUS RESTARTS AGE
@@ -281,7 +281,7 @@ Lets modify the container image to a different version
     web-0 0/1 ContainerCreating 0 1s
     web-0 1/1 Running 0 2s
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We can see from the above output the sequential order is preserved
 

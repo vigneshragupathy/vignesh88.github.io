@@ -15,12 +15,12 @@ The Linux bonding driver provides a method for aggregating multiple network inte
 
 We can check the bonding module by
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@example.com ~]# lsmod |grep bonding
     bonding 142537 0
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 #### Linux Teaming driver
 
 The Linux Team driver provides an alternative to bonding driver. it has actually been designed to solve the same problem(s) using a wholly different design and different approach; an approach where special attention was paid to flexibility and efficiency. The best part is that the configuration, management, and monitoring of team driver is significantly improved with no compromise on performance, features, or throughput.The main difference is that Team driver kernel part contains only essential code and the rest of the code (link validation, LACP implementation, decision making, etc.) is run in userspace as a part of teamd daemon.
@@ -29,7 +29,7 @@ Features comparison between Bonding and Teaming
 source – redhat.com
 
 #### Feature Bonding Team
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     broadcast TX policy	Yes	Yes
     round-robin TX policy	Yes	Yes
@@ -62,11 +62,11 @@ source – redhat.com
     RX load-balancing support (ALB) in bridge or OVS	No	Planned
     Performance Analysis between Bonding and Teaming
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 source – redhat.com
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     Machine type: 3.3Ghz CPU (Intel), 4GB RAM
     Link Type: 10GFO
@@ -76,40 +76,40 @@ source – redhat.com
     bonded (eth0+eth1)	1510.13Mb/s (27.65%CPU)	7277.48Mb/s (30.07%CPU)	9414.97Mb/s (15.62%CPU)	55.5usec
     teamed (eth0+eth1)	1550.15Mb/s (26.81%CPU)	7435.76Mb/s (29.56%CPU)	9413.8Mb/s (17.63%CPU)	55.5usec
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Migration
 
 We can migrate the existing bond interface to a team interface.  
 Bond2team is a cli tool used to convert an existing bond interface to team.  
 To convert a current bond0 configuration to team ifcfg, issue a command as root:
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# /usr/bin/bond2team –master bond0 –rename team0
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 To convert a current bond0 configuration to team ifcfg, and to manually specify the path to the ifcfg file, issue a command as root:
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# /usr/bin/bond2team –master bond0 –configdir /path/to/ifcfg-file
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 It is also possible to create a team configuration by supplying the bond2team tool with a list of bonding parameters. For example:
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# /usr/bin/bond2team –bonding_opts “mode=1 miimon=500”
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Configuration – Mode:active-backup
 
 Step 1:  
 Check the available network device status
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli device status
     DEVICE TYPE STATE CONNECTION
@@ -118,57 +118,57 @@ Check the available network device status
     eno2 ethernet disconnected —
     lo loopback unmanaged —
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Check the network connection status
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
     System eth0 5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03 802-3-ethernet eth0
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 2:  
 Creating a team interface named team0 in active-backup mode
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection add con-name team0 type team ifname team0 config ‘{“runner”: {“name”: “activebackup”}}’
     Connection ‘team0’ (c30dca42-cc35-4578-95c6-ae79f33b5db3) successfully added.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Verify the new team connection is created
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
     team0 c30dca42-cc35-4578-95c6-ae79f33b5db3 team team0
     System eth0 5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03 802-3-ethernet eth0
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 3:  
 Add the slave interface (eno1 and en02) and point the master to the newly created team interface team0
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection add con-name team0-sl1 type team-slave ifname eno1 master team0
     Connection ‘team0-sl1’ (8d5be820-2e88-46a2-8c08-b34ec0caf8a0) successfully added.
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection add con-name team0-sl2 type team-slave ifname eno2 master team0
     Connection ‘team0-sl2’ (3372f52c-0164-49d5-9783-938df99f18bc) successfully added.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Verify the connection status now . we can see team masters and slaves here
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
@@ -177,20 +177,20 @@ Verify the connection status now . we can see team masters and slaves here
     team0-sl2 3372f52c-0164-49d5-9783-938df99f18bc 802-3-ethernet eno2
     team0-sl1 8d5be820-2e88-46a2-8c08-b34ec0caf8a0 802-3-ethernet eno1
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 4:  
 Now assign the IP address to the team0 interface
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection modify team0 ipv4.addresses 192.168.20.100/24 ipv4.method manual
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Check the teaming status. Here we can see team0 interface status and active slave
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# teamdctl team0 state
     setup:
@@ -211,23 +211,23 @@ Check the teaming status. Here we can see team0 interface status and active slav
     runner:
     active port: eno1
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 5:  
 Checking the redundancy
 
 Now bring down the current active slave interface and check the other interface becomes active
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection down team0-sl
     team0-sl1 team0-sl2
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@HOST1 ~]# nmcli connection down team0-sl1
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@HOST1 ~]# teamdctl team0 state
     setup:
@@ -242,7 +242,7 @@ Now bring down the current active slave interface and check the other interface 
     runner:
     active port: eno2
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now we can see the active port is changed to eno2 automatically.
 
@@ -251,7 +251,7 @@ Now we can see the active port is changed to eno2 automatically.
 Step 1:  
 Check the network interfaces available
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# ifconfig |grep eno -A 2
     eno16777728: flags=4163 mtu 1500
@@ -263,46 +263,46 @@ Check the network interfaces available
     eno50332200: flags=4163 mtu 1500
     ether 00:0c:29:9e:6f:b3 txqueuelen 1000 (Ethernet)
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 2:  
 Create a teaming interface with config roundrobin
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# nmcli connection add con-name team1 type team ifname team1 config ‘{“runner”: {“name”: “roundrobin”}}’
     Connection ‘team1’ (ef3bc4dc-c060-4d39-865a-6c6df65d6c3d) successfully added.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 3:  
 Create a slave interface and point the master to team1
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# nmcli connection add con-name slave1 type team-slave ifname eno33554976 master team1
     Connection ‘slave1’ (f77e9f45-43fe-438d-9b91-9e2397b15272) successfully added. 
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node1 ~]# nmcli connection add con-name slave2 type team-slave ifname eno50332200 master team1
     Connection ‘slave2’ (4559604b-ffd4-4513-a3a9-b9c94ceb5108) successfully added.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 4:  
 Assign IP to team1 interface
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# nmcli connection modify team1 ipv4.addresses 10.0.0.23/24 ipv4.method manual
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 5:  
 Check the connecton status
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
@@ -311,7 +311,7 @@ Check the connecton status
     eno16777728 c0cbd7c2-b6cc-473d-919f-4a291fc72cd4 802-3-ethernet eno16777728
     slave2 4559604b-ffd4-4513-a3a9-b9c94ceb5108 802-3-ethernet eno50332200
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node1 ~]# teamdctl team1 state
     setup:
@@ -330,21 +330,21 @@ Check the connecton status
     name: ethtool
     link: up
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ## Bandwidth analysis between individual NIC and teaming NIC (mode=round-robin)
 
 I Used another VM(node2) with identical configuraton and followed the same steps and assined the IP 10.0.0.24 to team1 interface.
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node2 ~]# nmcli connection modify team1 ipv4.addresses 10.0.0.24/24 ipv4.method manual
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 1:  
 Installing qperf packege in both the node
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@nodeX]# rpm -ivh qperf-0.4.9-2.el7.x86_64.rpm
     warning: qperf-0.4.9-2.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID fd431d51: NOKEY
@@ -352,25 +352,25 @@ Installing qperf packege in both the node
     Updating / installing…
     1:qperf-0.4.9-2.el7 ################################# [100%]
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 2:  
 Flush the iptables in both the nodes
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@nodeX ~]# iptables -F
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 3:  
 Now bringing down the teaming interface from both the nodes to check the bandwith by keeping only individual NIC
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# nmcli connection down team1
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node1 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
@@ -379,11 +379,11 @@ Now bringing down the teaming interface from both the nodes to check the bandwit
     team1 ef3bc4dc-c060-4d39-865a-6c6df65d6c3d team —
     slave1 f77e9f45-43fe-438d-9b91-9e2397b15272 802-3-ethernet —
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node2 ~]# nmcli connection down team1
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node2 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
@@ -392,22 +392,22 @@ Now bringing down the teaming interface from both the nodes to check the bandwit
     eno16777728 42910ac3-a701-4f5e-b416-59c61ce1eb11 802-3-ethernet eno16777728
     slave2 72061aa5-dac5-4376-b6df-34c0e5620b2e 802-3-ethernet —
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 4:  
 Now starting qperf in node2
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node2 ~]# qperf
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 5:  
 Now running qperf for 5 minutes to check the tcp and udp bandwidth between node 1 and node 2 .  
 The IP 10.0.0.22 is assined to NIC eno16777728 of node2
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# qperf 10.0.0.22 -t 300 tcp_bw udp_bw
     tcp_bw:
@@ -416,16 +416,16 @@ The IP 10.0.0.22 is assined to NIC eno16777728 of node2
     send_bw = 55.9 MB/sec
     recv_bw = 55.2 MB/sec
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 6:  
 Now bandwidth of individual NIC is tested, lets bring up team interface and bring down individual NIC
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# nmcli connection down eno16777728
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node1 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
@@ -434,11 +434,11 @@ Now bandwidth of individual NIC is tested, lets bring up team interface and brin
     team1 ef3bc4dc-c060-4d39-865a-6c6df65d6c3d team team1
     slave1 f77e9f45-43fe-438d-9b91-9e2397b15272 802-3-ethernet eno33554976
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node2 ~]# nmcli connection down eno16777728
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     [root@node2 ~]# nmcli connection show
     NAME UUID TYPE DEVICE
@@ -447,22 +447,22 @@ Now bandwidth of individual NIC is tested, lets bring up team interface and brin
     eno16777728 42910ac3-a701-4f5e-b416-59c61ce1eb11 802-3-ethernet —
     slave2 72061aa5-dac5-4376-b6df-34c0e5620b2e 802-3-ethernet eno50332200
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 7:  
 Starting qperf on node2
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node2 ~]# qperf
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Step 8:  
 Now running qperf for 5 minutes to check the tcp and udp bandwidth between node 1 and node 2 .  
 The IP 10.0.0.24 is assined to team1 interface of node2
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     [root@node1 ~]# qperf 10.0.0.24 -t 300 tcp_bw udp_bw
     tcp_bw:
@@ -471,7 +471,7 @@ The IP 10.0.0.24 is assined to team1 interface of node2
     send_bw = 51.5 MB/sec
     recv_bw = 51 MB/sec
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now we can see the bandwith between individual NIC and team interface is almost same.
 

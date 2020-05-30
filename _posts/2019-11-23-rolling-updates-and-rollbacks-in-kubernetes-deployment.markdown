@@ -16,7 +16,7 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 
 <!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="/content/images/2019/11/Screenshot-from-2019-11-23-11-56-54.png" class="kg-image"></figure><!--kg-card-end: image-->
 ### Step 1: Create a deployment
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl create deployment nginx --image=nginx
     deployment.apps/nginx created
@@ -25,10 +25,10 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     NAME READY UP-TO-DATE AVAILABLE AGE CONTAINERS IMAGES SELECTOR
     nginx 1/1 1 1 25s nginx nginx app=nginx
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 2: Export the deployment to yaml file and add the port option(for nginx image the port is 80)
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl get deployments -o yaml > nginx.yaml
     
@@ -37,16 +37,16 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
             - containerPort: 80
               protocol: TCP
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 3: Apply the changes to the deployment
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl apply -f nginx.yaml
     Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl applydeployment.apps/nginx configured
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 4: Expose the deployment as ClusterIP
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl expose deployment nginx --type=ClusterIP
     service/nginx exposed
@@ -55,9 +55,9 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE
     nginx ClusterIP 10.102.68.171 80/TCP 8s
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 5: Verify the service by accessing nginx deployment using the ClusterIP
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ curl 10.102.68.171
     Welcome to nginx!
@@ -65,17 +65,17 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
     For online documentation and support please refer to nginx.org.Commercial support is available at nginx.com.
     Thank you for using nginx.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 6: Verify the current version of Nginx
 
 Go to the kubernetes node kubernetes2 and verify the nginx version
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes2:~# docker exec -it k8s_nginx_nginx-85ff79dd56-mch7j_default_4608325f-2432-4ff3-86ab-e1f2b01dd8f2_0 nginx -v
     nginx version: nginx/1.17.6
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we have made 2 changes to the nginx deployment
 
@@ -83,16 +83,16 @@ Go to the kubernetes node kubernetes2 and verify the nginx version
 - Nginx deployment with container port set as 80
 
 ### Step 7: set Nginx with a different image version
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl set image deployment nginx nginx=nginx:1.9.1
     deployment.apps/nginx image updated
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Verify the nginx version in node kubernetes2
 
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     root@kubernetes2:~# docker ps -a |grep nginx
     e547e6fc1ad1 nginx "nginx -g 'daemon of…" 37 seconds ago Up 36 seconds k8s_nginx_nginx-69fbc8b64f-2k6wm_default_4695011d-de3b-497d-81b3-2f5de48c3e92_0
@@ -100,12 +100,12 @@ Verify the nginx version in node kubernetes2
     root@kubernetes2:~# docker exec -it k8s_nginx_nginx-69fbc8b64f-2k6wm_default_4695011d-de3b-497d-81b3-2f5de48c3e92_0 nginx -v
     nginx version: nginx/1.9.1
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now the nginix version is changed from **1.17.6** to **1.9.1**
 
 ### Step 8: Verify the service by accessing nginx deployment using the ClusterIP
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ curl 10.102.68.171
     Welcome to nginx!
@@ -113,9 +113,9 @@ Now the nginix version is changed from **1.17.6** to **1.9.1**
     For online documentation and support please refer to nginx.org.Commercial support is available at nginx.com.
     Thank you for using nginx.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 ### Step 9: Verify the rollout history
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl rollout history deployment nginx 
     deployment.apps/nginx
@@ -124,19 +124,19 @@ Now the nginix version is changed from **1.17.6** to **1.9.1**
     2         
     3
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > Now we have made 3 changes to the nginx deployment
 
 ### Step 10: Now rollback to older revision and verify the nginx version changes
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ kubectl rollout undo deployment nginx --to-revision=2
     deployment.apps/nginx rolled back
     vikki@kubernetes1:~$ kubectl rollout status deployment nginx
     deployment "nginx" successfully rolled out
 
-<!--kg-card-end: code--><!--kg-card-begin: code-->
+{% endhighlight %}{% highlight console %}
 
     root@kubernetes2:~# docker ps -a |grep nginx
     5825d85fca05 nginx "nginx -g 'daemon of…" 11 seconds ago Up 11 seconds k8s_nginx_nginx-85ff79dd56-6vjx6_default_3ae5f3ba-af97-4320-9684-46c2ad8f69d6_0
@@ -146,12 +146,12 @@ Now the nginix version is changed from **1.17.6** to **1.9.1**
     root@kubernetes2:~# docker exec -it k8s_nginx_nginx-85ff79dd56-6vjx6_default_3ae5f3ba-af97-4320-9684-46c2ad8f69d6_0 nginx -v
     nginx version: nginx/1.17.6
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 Now the nginix version is changed from &nbsp; **1.9.1** to **1.17.6**
 
 ### Step 11: Verify the service by accessing nginx deployment using the ClusterIP
-<!--kg-card-begin: code-->
+{% highlight console %}
 
     vikki@kubernetes1:~$ curl 10.102.68.171
     Welcome to nginx!
@@ -159,7 +159,7 @@ Now the nginix version is changed from &nbsp; **1.9.1** to **1.17.6**
     For online documentation and support please refer to nginx.org.Commercial support is available at nginx.com.
     Thank you for using nginx.
 
-<!--kg-card-end: code-->
+{% endhighlight %}
 
 > We successfully done the rollout in nginx deployment
 
