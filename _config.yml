@@ -67,9 +67,10 @@ website: https://www.vikki.in
 google_analytics: UA-75997179-1
 show_excerpts: true
 header_pages:
-  - pages/about-me.markdown
+  - pages/photography.markdown
   - pages/tools.markdown
   - pages/videos.markdown
+  - pages/about-me.markdown
 paginate: 5
 paginate_path: /page:num/
 markdown: kramdown
