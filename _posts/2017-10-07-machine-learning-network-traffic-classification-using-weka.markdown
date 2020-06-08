@@ -39,16 +39,14 @@ Now we have converted the wireshark output to arff so that it can be readable be
 
 For this, I opened the arff file and manually defined the class based on the application the traffic is generated
 
-{% highlight console %}
+| Traffic type | Application used |
+| ------------- |-------------:|
+| http       | browser|
+| ftp        | filezilla client|
+| bittorrent | peer-peer_client |
+| snmp       | monitoring_tools|
 
-    Traffic type	Application used
-    http	browser
-    ftp	filezilla client
-    bittorrent	peer-peer_client
-    snmp	monitoring_tools
-
-{% endhighlight %}
-
+<br/>
 My final arff file is below, with the class name “Traffic\_category” added.  
 Now if you see closely, for some of the instances(5,31,35,53) the “Traffic\_category” class is left undefined.In the next step i am going to use weka to predict the class in which the instance belongs to using machine learning algorithm.
 
@@ -61,8 +59,8 @@ Make sure the class path is properly exported before executing the code. In my s
 
 {% highlight console %}
 
-    export CLASSPATH=$CLASSPATH:/usr/share/java/weka.jar
-    ~jython UsingJ48Ext.py main.arff
+export CLASSPATH=$CLASSPATH:/usr/share/java/weka.jar
+~jython UsingJ48Ext.py main.arff
 
 {% endhighlight %}
 
@@ -75,63 +73,63 @@ J48 pruned tree
 
 {% highlight console %}
 
-    Protocol = SNMP: monitoring_tools (10.0/1.0)
-    Protocol = SRVLOC: telnet (0.0)
-    Protocol = NBNS: telnet (0.0)
-    Protocol = BROWSER: telnet (0.0)
-    Protocol = ICMP: telnet (0.0)
-    Protocol = TCP: telnet (0.0)
-    Protocol = TELNET: telnet (18.0)
-    Protocol = BitTorrent: peer-peer_client (12.0)
-    Protocol = TFTP: filezilla (9.0)
-    Protocol = HTTP: browsers (4.0)
-    
-    Number of Leaves : 10
-    
-    Size of the tree : 11
+Protocol = SNMP: monitoring_tools (10.0/1.0)
+Protocol = SRVLOC: telnet (0.0)
+Protocol = NBNS: telnet (0.0)
+Protocol = BROWSER: telnet (0.0)
+Protocol = ICMP: telnet (0.0)
+Protocol = TCP: telnet (0.0)
+Protocol = TELNET: telnet (18.0)
+Protocol = BitTorrent: peer-peer_client (12.0)
+Protocol = TFTP: filezilla (9.0)
+Protocol = HTTP: browsers (4.0)
+
+Number of Leaves : 10
+
+Size of the tree : 11
 
 {% endhighlight %}
 ### 2. Evaluation
 {% highlight console %}
 
-    Correctly Classified Instances 52 98.1132 %
-    Incorrectly Classified Instances 1 1.8868 %
-    Kappa statistic 0.9753
-    Mean absolute error 0.0136
-    Root mean squared error 0.0824
-    Relative absolute error 4.4312 %
-    Root relative squared error 21.0904 %
-    Total Number of Instances 53     
-    Ignored Class Unknown Instances 4     
+Correctly Classified Instances 52 98.1132 %
+Incorrectly Classified Instances 1 1.8868 %
+Kappa statistic 0.9753
+Mean absolute error 0.0136
+Root mean squared error 0.0824
+Relative absolute error 4.4312 %
+Root relative squared error 21.0904 %
+Total Number of Instances 53     
+Ignored Class Unknown Instances 4     
 
 {% endhighlight %}
 ### 3. Prediction
 {% highlight console %}
 
-         1 5:monitori 5:monitori 0.9 
-         2 5:monitori 5:monitori 0.9 
-         5 1:? 5:monitori 0.9 
-         6 5:monitori 5:monitori 0.9 
-         7 5:monitori 5:monitori 0.9 
-        27 4:telnet 4:telnet 1 
-        28 4:telnet 4:telnet 1 
-        29 2:peer-pee 2:peer-pee 1 
-        30 2:peer-pee 2:peer-pee 1 
-        31 1:? 2:peer-pee 1 
-        32 2:peer-pee 2:peer-pee 1 
-        33 2:peer-pee 2:peer-pee 1 
-        34 2:peer-pee 2:peer-pee 1 
-        35 1:? 2:peer-pee 1 
-        36 2:peer-pee 2:peer-pee 1 
-        37 2:peer-pee 2:peer-pee 1 
-        43 3:filezill 3:filezill 1 
-        44 3:filezill 3:filezill 1 
-        45 3:filezill 5:monitori + 0.9 
-        46 3:filezill 3:filezill 1 
-        47 3:filezill 3:filezill 1 
-        52 3:filezill 3:filezill 1 
-        53 1:? 1:browsers 1 
-        54 1:browsers 1:browsers 1 
+    1 5:monitori 5:monitori 0.9 
+    2 5:monitori 5:monitori 0.9 
+    5 1:? 5:monitori 0.9 
+    6 5:monitori 5:monitori 0.9 
+    7 5:monitori 5:monitori 0.9 
+27 4:telnet 4:telnet 1 
+28 4:telnet 4:telnet 1 
+29 2:peer-pee 2:peer-pee 1 
+30 2:peer-pee 2:peer-pee 1 
+31 1:? 2:peer-pee 1 
+32 2:peer-pee 2:peer-pee 1 
+33 2:peer-pee 2:peer-pee 1 
+34 2:peer-pee 2:peer-pee 1 
+35 1:? 2:peer-pee 1 
+36 2:peer-pee 2:peer-pee 1 
+37 2:peer-pee 2:peer-pee 1 
+43 3:filezill 3:filezill 1 
+44 3:filezill 3:filezill 1 
+45 3:filezill 5:monitori + 0.9 
+46 3:filezill 3:filezill 1 
+47 3:filezill 3:filezill 1 
+52 3:filezill 3:filezill 1 
+53 1:? 1:browsers 1 
+54 1:browsers 1:browsers 1 
 
 {% endhighlight %}
 
@@ -140,11 +138,11 @@ It contains 4 column
 
 {% highlight console %}
 
-    Column number	Details
-    First column	Instance number
-    Second column	Class defined in dataset
-    Third column	Class predicted by machine learning
-    Fourth column	Probability that the instance is belong to the class predicted my machine
+Column number	Details
+First column	Instance number
+Second column	Class defined in dataset
+Third column	Class predicted by machine learning
+Fourth column	Probability that the instance is belong to the class predicted my machine
 
 {% endhighlight %}
 

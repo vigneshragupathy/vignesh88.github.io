@@ -20,32 +20,32 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Step 1: Create a daemon set 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl create -f ds.yaml 
-    daemonset.apps/fluentd-elasticsearch created
+vikki@kubernetes1:~$ kubectl create -f ds.yaml 
+daemonset.apps/fluentd-elasticsearch created
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/467337d30e6018fae4d33af6d762f36d.js"></script><!--kg-card-end: html-->{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl get ds
-    NAME DESIRED CURRENT READY UP-TO-DATE AVAILABLE NODE SELECTOR AGE
-    fluentd-elasticsearch 2 2 2 2 2 <none> 5s
+vikki@kubernetes1:~$ kubectl get ds
+NAME DESIRED CURRENT READY UP-TO-DATE AVAILABLE NODE SELECTOR AGE
+fluentd-elasticsearch 2 2 2 2 2 <none> 5s
 
 {% endhighlight %}
 ### Step 2: Verify the image version and updateStrategy of the daemonset
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
-    
-    vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml |grep -A 3 -i updateStrategy
-      updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
-        type: RollingUpdate
-    
-    vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
-    fluentd-elasticsearch-7ds49 fluentd-elasticsearch-qh8n8  
-    vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-7ds49 |grep Image:
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+
+vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml |grep -A 3 -i updateStrategy
+    updateStrategy:
+    rollingUpdate:
+        maxUnavailable: 1
+    type: RollingUpdate
+
+vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
+fluentd-elasticsearch-7ds49 fluentd-elasticsearch-qh8n8  
+vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-7ds49 |grep Image:
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
     
 
 {% endhighlight %}
@@ -55,20 +55,20 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Step 3: Update the daemon set container image to a different version say "2.5.2" 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl set image ds fluentd-elasticsearch fluentd-elasticsearch=quay.io/fluentd_elasticsearch/fluentd:v2.5.1
-    daemonset.apps/fluentd-elasticsearch image updated
+vikki@kubernetes1:~$ kubectl set image ds fluentd-elasticsearch fluentd-elasticsearch=quay.io/fluentd_elasticsearch/fluentd:v2.5.1
+daemonset.apps/fluentd-elasticsearch image updated
 
 {% endhighlight %}
 ### step 4 : Verify the image version is updated in daemonset level also in pod level
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
-    
-    vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-
-    fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57  
-    vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
+vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
+
+vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-
+fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57  
+vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
 
 {% endhighlight %}
 
@@ -77,32 +77,32 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Step 5: Now lets change the updateStrategy to OnDelete and watch the behaviour
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml > ds_new.yaml 
-    vikki@kubernetes1:~$ vim ds_new.yaml 
+vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml > ds_new.yaml 
+vikki@kubernetes1:~$ vim ds_new.yaml 
     
     
     
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/573453ca14d2e79e02f3cfe6c7a3ef20.js"></script><!--kg-card-end: html-->{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl apply -f ds_new.yaml 
-    Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
-    daemonset.apps/fluentd-elasticsearch configured
+vikki@kubernetes1:~$ kubectl apply -f ds_new.yaml 
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+daemonset.apps/fluentd-elasticsearch configured
 
 {% endhighlight %}{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
-    
-    vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml |grep -A 3 -i updateStrategy
-    --
-      updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
-        type: OnDelete
-    
-    vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.1
+
+vikki@kubernetes1:~$ kubectl get ds fluentd-elasticsearch -o yaml |grep -A 3 -i updateStrategy
+--
+    updateStrategy:
+    rollingUpdate:
+        maxUnavailable: 1
+    type: OnDelete
+
+vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
     
 
 {% endhighlight %}
@@ -112,21 +112,18 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Step 6: Lets change the image to different version
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl set image ds fluentd-elasticsearch fluentd-elasticsearch=quay.io/fluentd_elasticsearch/fluentd:v2.5.0
-    daemonset.apps/fluentd-elasticsearch image updated
-    
-    
-    
+vikki@kubernetes1:~$ kubectl set image ds fluentd-elasticsearch fluentd-elasticsearch=quay.io/fluentd_elasticsearch/fluentd:v2.5.0
+daemonset.apps/fluentd-elasticsearch image updated
 
 {% endhighlight %}
 ### Step 7: Verify the image version in daemonset and pod
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.0
-    
-    vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+vikki@kubernetes1:~$ kubectl describe ds fluentd-elasticsearch |grep Image
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.0
+
+vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-qh8n8 |grep Image:
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
 
 {% endhighlight %}
 
@@ -135,23 +132,23 @@ I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this ent
 ### Step 8: Lets delete the pod and wait for the new pods to be created and verify the image version in new pod
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl delete pod fluentd-elasticsearch-
-    fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57  
-    
-    vikki@kubernetes1:~$ kubectl delete pod fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57
-    pod "fluentd-elasticsearch-qh8n8" deleted
-    pod "fluentd-elasticsearch-x2f57" deleted
+vikki@kubernetes1:~$ kubectl delete pod fluentd-elasticsearch-
+fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57  
+
+vikki@kubernetes1:~$ kubectl delete pod fluentd-elasticsearch-qh8n8 fluentd-elasticsearch-x2f57
+pod "fluentd-elasticsearch-qh8n8" deleted
+pod "fluentd-elasticsearch-x2f57" deleted
 
 {% endhighlight %}{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
-    fluentd-elasticsearch-89g44 fluentd-elasticsearch-mf5f9  
-    
-    vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
-    fluentd-elasticsearch-89g44 fluentd-elasticsearch-mf5f9  
-    
-    vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-89g44 |grep Image:
-        Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.0
+vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
+fluentd-elasticsearch-89g44 fluentd-elasticsearch-mf5f9  
+
+vikki@kubernetes1:~$ kubectl get pod fluentd-elasticsearch-
+fluentd-elasticsearch-89g44 fluentd-elasticsearch-mf5f9  
+
+vikki@kubernetes1:~$ kubectl describe pod fluentd-elasticsearch-89g44 |grep Image:
+    Image: quay.io/fluentd_elasticsearch/fluentd:v2.5.0
 
 {% endhighlight %}
 

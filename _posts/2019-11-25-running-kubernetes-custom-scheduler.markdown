@@ -31,39 +31,39 @@ The key changes made are
 - line 39: - --scheduler-name=my-scheduler
 {% highlight console %}
 
-    vikki@kubernetes1:~$ sudo cp /etc/kubernetes/manifests/kube-scheduler.yaml custom-scheduler.yaml
-    vikki@kubernetes1:~$ sudo chmod 777 custom-scheduler.yaml 
-    vikki@kubernetes1:~$ vim custom-scheduler.yaml 
+vikki@kubernetes1:~$ sudo cp /etc/kubernetes/manifests/kube-scheduler.yaml custom-scheduler.yaml
+vikki@kubernetes1:~$ sudo chmod 777 custom-scheduler.yaml 
+vikki@kubernetes1:~$ vim custom-scheduler.yaml 
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/2a8e765cb702a7f8edf4e8760599da10.js"></script><!--kg-card-end: html-->
 ##### Step 2: Create the custom scheduler
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl create -f custom-scheduler.yaml 
-    serviceaccount/my-scheduler created
-    clusterrolebinding.rbac.authorization.k8s.io/my-scheduler-as-kube-scheduler created
-    pod/my-scheduler created
+vikki@kubernetes1:~$ kubectl create -f custom-scheduler.yaml 
+serviceaccount/my-scheduler created
+clusterrolebinding.rbac.authorization.k8s.io/my-scheduler-as-kube-scheduler created
+pod/my-scheduler created
 
 {% endhighlight %}{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl get pods -n=kube-system 
-    NAME READY STATUS RESTARTS AGE
-    calico-kube-controllers-55754f75c-fgs8g 1/1 Running 7 22d
-    calico-node-4h72l 1/1 Running 7 22d
-    calico-node-ld84s 1/1 Running 7 22d
-    calico-node-lrfz9 1/1 Running 2 31h
-    calico-node-ws576 1/1 Running 1 27h
-    coredns-5644d7b6d9-2g6rs 1/1 Running 7 22d
-    coredns-5644d7b6d9-ccxsg 1/1 Running 7 22d
-    etcd-kubernetes1 1/1 Running 8 22d
-    kube-apiserver-kubernetes1 1/1 Running 8 22d
-    kube-controller-manager-kubernetes1 1/1 Running 8 22d
-    kube-proxy-6xd8l 1/1 Running 2 31h
-    kube-proxy-96q5x 1/1 Running 7 22d
-    kube-proxy-njl6r 1/1 Running 7 22d
-    kube-proxy-whlhw 1/1 Running 1 27h
-    kube-scheduler-kubernetes1 1/1 Running 8 22d
-    my-scheduler 1/1 Running 0 6s
+vikki@kubernetes1:~$ kubectl get pods -n=kube-system 
+NAME READY STATUS RESTARTS AGE
+calico-kube-controllers-55754f75c-fgs8g 1/1 Running 7 22d
+calico-node-4h72l 1/1 Running 7 22d
+calico-node-ld84s 1/1 Running 7 22d
+calico-node-lrfz9 1/1 Running 2 31h
+calico-node-ws576 1/1 Running 1 27h
+coredns-5644d7b6d9-2g6rs 1/1 Running 7 22d
+coredns-5644d7b6d9-ccxsg 1/1 Running 7 22d
+etcd-kubernetes1 1/1 Running 8 22d
+kube-apiserver-kubernetes1 1/1 Running 8 22d
+kube-controller-manager-kubernetes1 1/1 Running 8 22d
+kube-proxy-6xd8l 1/1 Running 2 31h
+kube-proxy-96q5x 1/1 Running 7 22d
+kube-proxy-njl6r 1/1 Running 7 22d
+kube-proxy-whlhw 1/1 Running 1 27h
+kube-scheduler-kubernetes1 1/1 Running 8 22d
+my-scheduler 1/1 Running 0 6s
 
 {% endhighlight %}
 
@@ -79,7 +79,7 @@ Below are the key changes made in orignal file
 - line 131: - storageclasses
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl edit clusterrole system:kube-scheduler
+vikki@kubernetes1:~$ kubectl edit clusterrole system:kube-scheduler
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/801aa697779378ff30e46e5247de8980.js"></script><!--kg-card-end: html-->
 ##### Step 4: Create pods with different types of scheduler
@@ -88,7 +88,7 @@ Create a pod without explicitly mentioning any scheuler name. This pod should be
 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ vim pod_default_scheduler.yaml
+vikki@kubernetes1:~$ vim pod_default_scheduler.yaml
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/cfe05dda5b00a4f170b9cdd08f6aa0dd.js"></script><!--kg-card-end: html-->
 
@@ -96,22 +96,22 @@ Create a pod by explicitly mentioning custom scheuler name _my-scheduler_.
 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ vim pod_custom_scheduler.yaml 
+vikki@kubernetes1:~$ vim pod_custom_scheduler.yaml 
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/04cc5ac3e1933b4c1979a631de424116.js"></script><!--kg-card-end: html-->{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl create -f pod_default_scheduler.yaml 
-    pod/nginx-pod-default-scheduler created
-    vikki@kubernetes1:~$ kubectl create -f pod_custom_scheduler.yaml 
-    pod/nginx-pod-custom-scheduler created
+vikki@kubernetes1:~$ kubectl create -f pod_default_scheduler.yaml 
+pod/nginx-pod-default-scheduler created
+vikki@kubernetes1:~$ kubectl create -f pod_custom_scheduler.yaml 
+pod/nginx-pod-custom-scheduler created
 
 {% endhighlight %}{% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl get pods nginx-pod-custom-scheduler nginx-pod-default-scheduler
-    NAME READY STATUS RESTARTS AGE
-    nginx-pod-custom-scheduler 1/1 Running 0 9m9s
-    nginx-pod-default-scheduler 1/1 Running 0 9m13s
-    vikki@kubernetes1:~$ 
+vikki@kubernetes1:~$ kubectl get pods nginx-pod-custom-scheduler nginx-pod-default-scheduler
+NAME READY STATUS RESTARTS AGE
+nginx-pod-custom-scheduler 1/1 Running 0 9m9s
+nginx-pod-default-scheduler 1/1 Running 0 9m13s
+vikki@kubernetes1:~$ 
 
 {% endhighlight %}
 
@@ -119,11 +119,11 @@ Create a pod by explicitly mentioning custom scheuler name _my-scheduler_.
 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl get events -o wide |grep nginx-pod-custom-scheduler |head -1
-    <unknown> Normal Scheduled pod/nginx-pod-custom-scheduler my-scheduler Successfully assigned default/nginx-pod-custom-scheduler to kubernetes3 <unknown> 0 nginx-pod-custom-scheduler.15da76383c2c2859
-    
-    vikki@kubernetes1:~$ kubectl get events -o wide |grep nginx-pod-default-scheduler |head -1
-    <unknown> Normal Scheduled pod/nginx-pod-default-scheduler default-scheduler Successfully assigned default/nginx-pod-default-scheduler to kubernetes3 <unknown> 0 nginx-pod-default-scheduler.15da76372f4444f7
+vikki@kubernetes1:~$ kubectl get events -o wide |grep nginx-pod-custom-scheduler |head -1
+<unknown> Normal Scheduled pod/nginx-pod-custom-scheduler my-scheduler Successfully assigned default/nginx-pod-custom-scheduler to kubernetes3 <unknown> 0 nginx-pod-custom-scheduler.15da76383c2c2859
+
+vikki@kubernetes1:~$ kubectl get events -o wide |grep nginx-pod-default-scheduler |head -1
+<unknown> Normal Scheduled pod/nginx-pod-default-scheduler default-scheduler Successfully assigned default/nginx-pod-default-scheduler to kubernetes3 <unknown> 0 nginx-pod-default-scheduler.15da76372f4444f7
 
 {% endhighlight %}
 

@@ -27,8 +27,8 @@ Create a new directly and navigate to the directory
 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ mkdir ssl
-    vikki@kubernetes1:~$ cd ssl/
+vikki@kubernetes1:~$ mkdir ssl
+vikki@kubernetes1:~$ cd ssl/
 
 {% endhighlight %}
 
@@ -36,13 +36,13 @@ Use openssl command a generate a private key _user1.key_
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ openssl genrsa -out user1.key 2048
-    Generating RSA private key, 2048 bit long modulus
-    .......................................................+++
-    .......................................................................................................................................+++
-    e is 65537 (0x10001)
-    vikki@kubernetes1:~/ssl$ ls
-    user1.key
+vikki@kubernetes1:~/ssl$ openssl genrsa -out user1.key 2048
+Generating RSA private key, 2048 bit long modulus
+.......................................................+++
+.......................................................................................................................................+++
+e is 65537 (0x10001)
+vikki@kubernetes1:~/ssl$ ls
+user1.key
 
 {% endhighlight %}
 ##### Step 2: Generate a CSR 
@@ -51,10 +51,10 @@ Use the private key generated in the privous step and generate the certificate s
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ openssl req -new -key user1.key -out user1.csr -subj "/CN=user1/O=vikki.in"
-    
-    vikki@kubernetes1:~/ssl$ ls
-    user1.csr user1.key
+vikki@kubernetes1:~/ssl$ openssl req -new -key user1.key -out user1.csr -subj "/CN=user1/O=vikki.in"
+
+vikki@kubernetes1:~/ssl$ ls
+user1.csr user1.key
 
 {% endhighlight %}
 ##### Step 3: Sign the CSR and generate certificate
@@ -63,8 +63,8 @@ The kubernetes cluster have the CA(certificate authority) key and certificate av
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ ls /etc/kubernetes/pki/ca.
-    ca.crt ca.key  
+vikki@kubernetes1:~/ssl$ ls /etc/kubernetes/pki/ca.
+ca.crt ca.key  
 
 {% endhighlight %}
 
@@ -72,14 +72,14 @@ Use the CA certificate and key to sign the CSR
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ sudo openssl x509 -req -in user1.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out user1.crt -days 365
-    [sudo] password for vikki: 
-    Signature ok
-    subject=/CN=user1/O=vikki.in
-    Getting CA Private Key
-    
-    vikki@kubernetes1:~/ssl$ ls
-    user1.crt user1.csr user1.key
+vikki@kubernetes1:~/ssl$ sudo openssl x509 -req -in user1.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out user1.crt -days 365
+[sudo] password for vikki: 
+Signature ok
+subject=/CN=user1/O=vikki.in
+Getting CA Private Key
+
+vikki@kubernetes1:~/ssl$ ls
+user1.crt user1.csr user1.key
 
 {% endhighlight %}
 
@@ -91,8 +91,8 @@ Now set credential for the user _user1_ with the private key and the signed cert
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl config set-credentials user1 --client-certificate=user1.crt --client-key=user1.key 
-    User "user1" set.
+vikki@kubernetes1:~/ssl$ kubectl config set-credentials user1 --client-certificate=user1.crt --client-key=user1.key 
+User "user1" set.
 
 {% endhighlight %}
 ##### Step 5: Set context for the user
@@ -103,13 +103,13 @@ We can also map the context to specific namespace using the --namespacec option.
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl config set-context user1-context --cluster=kubernetes --user=user1
-    Context "user1-context" created.
-    
-    vikki@kubernetes1:~/ssl$ kubectl config get-contexts 
-    CURRENT NAME CLUSTER AUTHINFO NAMESPACE
-    * kubernetes-admin@kubernetes kubernetes kubernetes-admin   
-              user1-context kubernetes user1              
+vikki@kubernetes1:~/ssl$ kubectl config set-context user1-context --cluster=kubernetes --user=user1
+Context "user1-context" created.
+
+vikki@kubernetes1:~/ssl$ kubectl config get-contexts 
+CURRENT NAME CLUSTER AUTHINFO NAMESPACE
+* kubernetes-admin@kubernetes kubernetes kubernetes-admin   
+            user1-context kubernetes user1              
 
 {% endhighlight %}
 
@@ -121,8 +121,8 @@ Create a role and map the resources and verb required.
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl create role myrole --verb=get,create,list --resource=pods
-    role.rbac.authorization.k8s.io/myrole created
+vikki@kubernetes1:~/ssl$ kubectl create role myrole --verb=get,create,list --resource=pods
+role.rbac.authorization.k8s.io/myrole created
 
 {% endhighlight %}
 ##### Step 7: Create a rolebinding
@@ -131,8 +131,8 @@ Create a rolebinding and map the role and user.
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl create rolebinding myrolebinding --role=myrole --user=user1 
-    rolebinding.rbac.authorization.k8s.io/myrolebinding created
+vikki@kubernetes1:~/ssl$ kubectl create rolebinding myrolebinding --role=myrole --user=user1 
+rolebinding.rbac.authorization.k8s.io/myrolebinding created
 
 {% endhighlight %}
 ##### Step 8: Verify role and rolebinding
@@ -141,21 +141,21 @@ List the role and rolebinding and verify both are created.
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl get role
-    NAME AGE
-    myrole 58s
-    vikki@kubernetes1:~/ssl$ kubectl get rolebindings.rbac.authorization.k8s.io 
-    NAME AGE
-    myrolebinding 8s
+vikki@kubernetes1:~/ssl$ kubectl get role
+NAME AGE
+myrole 58s
+vikki@kubernetes1:~/ssl$ kubectl get rolebindings.rbac.authorization.k8s.io 
+NAME AGE
+myrolebinding 8s
 
 {% endhighlight %}
 ##### Step 9: Change the context and verify role based access
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl config get-contexts 
-    CURRENT NAME CLUSTER AUTHINFO NAMESPACE
-    * kubernetes-admin@kubernetes kubernetes kubernetes-admin   
-              user1-context kubernetes user1     
+vikki@kubernetes1:~/ssl$ kubectl config get-contexts 
+CURRENT NAME CLUSTER AUTHINFO NAMESPACE
+* kubernetes-admin@kubernetes kubernetes kubernetes-admin   
+            user1-context kubernetes user1     
 
 {% endhighlight %}
 
@@ -163,13 +163,13 @@ Switch to newly created contesxt _user1-context_
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl config use-context user1-context 
-    Switched to context "user1-context".
-    
-    vikki@kubernetes1:~/ssl$ kubectl config get-contexts 
-    CURRENT NAME CLUSTER AUTHINFO NAMESPACE
-              kubernetes-admin@kubernetes kubernetes kubernetes-admin   
-    * user1-context kubernetes user1           
+vikki@kubernetes1:~/ssl$ kubectl config use-context user1-context 
+Switched to context "user1-context".
+
+vikki@kubernetes1:~/ssl$ kubectl config get-contexts 
+CURRENT NAME CLUSTER AUTHINFO NAMESPACE
+            kubernetes-admin@kubernetes kubernetes kubernetes-admin   
+* user1-context kubernetes user1           
 
 {% endhighlight %}
 
@@ -179,9 +179,9 @@ Try to create a deployement
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl run nginx-deployment --image=nginx
-    kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
-    Error from server (Forbidden): deployments.apps is forbidden: User "user1" cannot create resource "deployments" in API group "apps" in the namespace "default"
+vikki@kubernetes1:~/ssl$ kubectl run nginx-deployment --image=nginx
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+Error from server (Forbidden): deployments.apps is forbidden: User "user1" cannot create resource "deployments" in API group "apps" in the namespace "default"
 
 {% endhighlight %}
 
@@ -191,20 +191,20 @@ Now lets create a pod and verify the status
 
 {% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ vim pod.yaml
+vikki@kubernetes1:~/ssl$ vim pod.yaml
 
 {% endhighlight %}<!--kg-card-begin: html--><script src="https://gist.github.com/vignesh88/aa1503f5161a453f120ab6b121f6325a.js"></script><!--kg-card-end: html-->{% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl create -f pod.yaml 
-    pod/myapp-pod created
+vikki@kubernetes1:~/ssl$ kubectl create -f pod.yaml 
+pod/myapp-pod created
 
 {% endhighlight %}{% highlight console %}
 
-    vikki@kubernetes1:~/ssl$ kubectl get pods
-    NAME READY STATUS RESTARTS AGE
-    httpd-7765f5994-vc2j5 1/1 Running 1 2d
-    myapp-pod 0/1 ContainerCreating 0 5s
-    nginx-7bffc778db-p4ff5 1/1 Running 1 2d
+vikki@kubernetes1:~/ssl$ kubectl get pods
+NAME READY STATUS RESTARTS AGE
+httpd-7765f5994-vc2j5 1/1 Running 1 2d
+myapp-pod 0/1 ContainerCreating 0 5s
+nginx-7bffc778db-p4ff5 1/1 Running 1 2d
 
 {% endhighlight %}
 
@@ -214,10 +214,10 @@ We can also test the permission of user using the below command
 
 {% highlight console %}
 
-    vikki@kubernetes1:~$ kubectl auth can-i create deployments --as user1
-    no
-    
-    vikki@kubernetes1:~$ kubectl auth can-i create pods --as user1
-    yes
+vikki@kubernetes1:~$ kubectl auth can-i create deployments --as user1
+no
+
+vikki@kubernetes1:~$ kubectl auth can-i create pods --as user1
+yes
 
 {% endhighlight %}

@@ -29,8 +29,8 @@ twitter_username: r_vignesh88
 github_username:  vignesh88
 
 # Build settings
-#theme: tale
-remote_theme: chesterhow/tale
+theme: tale
+#remote_theme: chesterhow/tale
 plugins:
   - jekyll-feed
   - jekyll-paginate
