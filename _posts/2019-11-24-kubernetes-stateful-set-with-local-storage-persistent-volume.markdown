@@ -6,6 +6,8 @@ tags:
 - kubernetes
 - linux
 - opensource
+author: Vignesh Ragupathy
+comments: true
 ---
 
 StatefulSets are similar to deployment contains identical container spec but ensures an order of the deployment. StatefulSets deploy pods in a sequential orders. Each pod as its own identity and is named with a unique ID. In the below post we are going to create a statefulsets and watch the behaviour during deletion of pod, scaling of pod and during update of container image.

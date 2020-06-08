@@ -5,6 +5,8 @@ featured: true
 date: '2017-10-07 11:26:00'
 tags:
 - photography
+author: Vignesh Ragupathy
+comments: true
 ---
 
 Budapest, otherwise called the Little Paris of Central Europe is one of the celebrated vacationer spots in Europe.  

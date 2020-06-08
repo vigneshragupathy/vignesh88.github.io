@@ -4,6 +4,8 @@ title: Bike trip to Goa
 date: '2017-10-07 11:38:00'
 tags:
 - photography
+author: Vignesh Ragupathy
+comments: true
 ---
 
 Someone once said “Happiness is a path, not a destination” and I know its very true when i started to travel in bike.I have plans to visit many places in bike for this year and then one of my friend called and we both decided to go Goa for a bike trip. We are 3 person in two bike, a Royal enfield and a Yamaha Fz. We don’t have much plans to do in Goa, only thing we wanted is to go there in a bike.

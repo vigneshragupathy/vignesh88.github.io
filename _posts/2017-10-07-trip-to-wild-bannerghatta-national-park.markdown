@@ -4,6 +4,8 @@ title: Trip to wild – Bannerghatta National Park
 date: '2017-10-07 11:49:00'
 tags:
 - photography
+author: Vignesh Ragupathy
+comments: true
 ---
 
 I have been trying my hand in photography for a few months now. Recently during a trip to Bannerghatta National Park i managed to shoot some of the wildlife using my DSLR camera. Here are few snaps from my recent trip to Bannerghatta National Park.

@@ -29,12 +29,14 @@ twitter_username: r_vignesh88
 github_username:  vignesh88
 
 # Build settings
-theme: minima
+#theme: tale
+remote_theme: chesterhow/tale
 plugins:
   - jekyll-feed
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-redirect-from
+  - jekyll-remote-theme
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -55,13 +57,12 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-# Customization
 permalink: :title/
 # Disqus Comments
-disqus:
+disqus: vikkiblog
     # Leave shortname blank to disable comments site-wide.
     # Disable comments for any post by adding `comments: false` to that post's YAML Front Matter.
-    shortname: vikkiblog
+#    shortname: vikkiblog
 author: "Vignesh Ragupathy"
 website: https://www.vikki.in
 google_analytics: UA-75997179-1
@@ -71,7 +72,7 @@ header_pages:
   - pages/tools.markdown
   - pages/videos.markdown
   - pages/about-me.markdown
-paginate: 5
+paginate: 8
 paginate_path: /page:num/
 markdown: kramdown
 highlighter: rouge
@@ -80,4 +81,4 @@ kramdown:
   syntax_highlighter_opts:
     default_lang: html
     css_class   : 'syntax'
-
+environment: production

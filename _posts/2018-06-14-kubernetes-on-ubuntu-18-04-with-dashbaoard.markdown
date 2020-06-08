@@ -7,6 +7,9 @@ tags:
 - linux
 - opensource
 - kubernetes
+author: Vignesh Ragupathy
+comments: true
+comments: true
 ---
 
 This post i am going to show how to install Kubernetes, configure Master node and enable Kubernetes dashboard in Ubuntu 18.04 LTS. I also tried to show the &nbsp;video demo explaining the entire configuration in the end of this post, This is my first video demo!!!

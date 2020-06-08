@@ -5,6 +5,8 @@ featured: true
 date: '2018-02-23 12:03:00'
 tags:
 - photography
+author: Vignesh Ragupathy
+comments: true
 ---
 
 A little rain for few days filled the rivers to overflow. It was a day the water turns golden brown. Plants and debris everywhere, up to the knees rippling the flowing water. The time has come for us to rejoin the infinite stream of waters.

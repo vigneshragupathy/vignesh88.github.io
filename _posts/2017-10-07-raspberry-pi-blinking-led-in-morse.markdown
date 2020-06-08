@@ -6,6 +6,8 @@ tags:
 - linux
 - electronics
 - opensource
+author: Vignesh Ragupathy
+comments: true
 ---
 
 In my previous post i described how i created high available replicated storage with raspberrypi  

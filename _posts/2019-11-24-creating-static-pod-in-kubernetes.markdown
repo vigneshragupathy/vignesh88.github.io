@@ -6,6 +6,8 @@ tags:
 - kubernetes
 - linux
 - opensource
+author: Vignesh Ragupathy
+comments: true
 ---
 
 Static Pods are managed directly by the kubelet daemon on a specific node, without the API server observing them.  

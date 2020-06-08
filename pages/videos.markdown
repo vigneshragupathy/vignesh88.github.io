@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: Videos
 date: '2019-10-21 12:20:00'
 permalink: /videos/

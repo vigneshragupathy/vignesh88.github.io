@@ -5,6 +5,8 @@ date: '2017-10-07 11:58:00'
 tags:
 - linux
 - opensource
+author: Vignesh Ragupathy
+comments: true
 ---
 
 I worked on a freelance project a year ago which gives me experience in Free IPA server. Here I am sharing some portion of the setup used.It would be useful for beginners trying to setup Free IPA server.

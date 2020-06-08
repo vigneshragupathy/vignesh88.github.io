@@ -6,6 +6,8 @@ tags:
 - kubernetes
 - linux
 - opensource
+author: Vignesh Ragupathy
+comments: true
 ---
 
 Kubernetes cluster have a default scheduler kube-scheduler. If the default scheduler does not suits our requirement we can also create our own scheduler. In the post we will discus how to create multiple scheduler and schedule pods based on different scheduler.

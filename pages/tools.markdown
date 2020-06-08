@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: Tools developed
 date: '2019-10-21 12:21:15'
 permalink: /tools/

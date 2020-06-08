@@ -6,6 +6,8 @@ tags:
 - kubernetes
 - linux
 - opensource
+author: Vignesh Ragupathy
+comments: true
 ---
 
 We can assign the pod to node based on various methods. Lets discuss all the below methods in the post

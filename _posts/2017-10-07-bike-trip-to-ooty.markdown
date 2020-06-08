@@ -4,6 +4,8 @@ title: bike trip to ooty
 date: '2017-10-07 11:44:00'
 tags:
 - photography
+author: Vignesh Ragupathy
+comments: true
 ---
 
 So…. I thought of a bike trip after New Year. This time taking my wife on the trip. So I was thinking something short in distance something less than 150 km, then Ooty comes to my mind. Then we both decided to go on a trip from Coimbatore to Ooty. It is a weekend trip, we just decided 3 days before, so no big plans.

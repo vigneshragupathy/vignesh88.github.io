@@ -6,6 +6,8 @@ tags:
 - linux
 - opensource
 - kubernetes
+author: Vignesh Ragupathy
+comments: true
 ---
 
 In my [previous post](/kubernetes-on-ubuntu-18-04-with-dashbaoard/#kubernetes-token-generation) we seen how to install and configure kubernetes master node and dashboard on Ubuntu 18.04. Now this post is about growing the Kubernetes master by joining more nodes. For this setup i am going to use a Centos 7 VM running in virtualbox.
