@@ -28,10 +28,11 @@ url: "https://www.vikki.in" # the base hostname & protocol for your site, e.g. h
 twitter_username: r_vignesh88
 github_username:  vignesh88
 youtube_channelid: VigneshRagupathy
+linkedin_username: vignesh88
 
 # Build settings
-theme: tale
-#remote_theme: chesterhow/tale
+#theme: tale
+remote_theme: chesterhow/tale
 plugins:
   - jekyll-feed
   - jekyll-paginate
