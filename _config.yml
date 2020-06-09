@@ -27,10 +27,11 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://www.vikki.in" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: r_vignesh88
 github_username:  vignesh88
+youtube_channelid: VigneshRagupathy
 
 # Build settings
-#theme: tale
-remote_theme: chesterhow/tale
+theme: tale
+#remote_theme: chesterhow/tale
 plugins:
   - jekyll-feed
   - jekyll-paginate
