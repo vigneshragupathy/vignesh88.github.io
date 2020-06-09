@@ -1,5 +1,8 @@
 # www.vikki.in
 [![Website www.vikki.in](https://img.shields.io/website-up-down-green-red/https/www.vikki.in.svg)](https://www.vikki.in)
+![Uptime Robot status](https://img.shields.io/uptimerobot/status/m779573618-4db35dbe759f23ff888f5334)
+![Uptime Robot ratio (30 days)](https://badgen.net/uptime-robot/month/m779573618-4db35dbe759f23ff888f5334)
+![(last hour) response](https://badgen.net/uptime-robot/response/m779573618-4db35dbe759f23ff888f5334)
 
 The source code for the Jekyll-based site https://www.vikki.in.
 
