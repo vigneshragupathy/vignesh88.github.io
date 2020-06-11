@@ -10,7 +10,7 @@ author: Vignesh Ragupathy
 categories: [PHP, Laravel]
 ---
 
-I been using AWS to host my personal blog for few years now. Orinally my blog was hosted in wordpress and then i migrated to ghost. My blog is running in ghost for last 2 years already. I thought of exploring new hosting option and finally decided to migrate to Jekyll. 
+I been using AWS to host my personal blog for few years now. Orinally my blog was hosted in wordpress and then i migrated to ghost. My blog is running in ghost for last 2 years already. I thought of exploring new hosting option and finally decided to migrate to Jekyll.
 
 Jekyll is a ruby based static blog and it has an advantage of hosting in github. The letsencrypt SSL certificate is also provided by github for my custom domain so i don't need to worry about managing it.
 
@@ -25,16 +25,23 @@ location /static/ {
     }
 {% endhighlight %}
 
-unpkg and jsdeliver are global CDN and they can be used to deliver any pacakges hosted in NPN
+> unpkg and jsdeliver are global CDN and they can be used to deliver any pacakges hosted in NPN
 
-### Step 1
-Create a directory 
+## NPN Pacakage creation
+
+### 1. Create the directory for adding packages for NPN
+
+{% highlight console %}
 mkdir npn
 mkdir npm/dist
 cd npm
-### Step 2
-Create a package.json file for your pacakage
+{% endhighlight %}
+
+### 2. Create a package.json file for your pacakage
+
+{% highlight console %}
 npm init
+{% endhighlight %}
 
 {% highlight json %}
 {
@@ -62,10 +69,13 @@ npm init
 }
 {% endhighlight %}
 
-### Step 3
-Create a index.js
+### 3. Create a index.js
 
+I added a javascript function that will be used to copy text to clipboard.
+
+{% highlight console %}
 vim dist/index.js 
+{% endhighlight %}
 
 {% highlight javascript %}
 function copyToClipboard(x,y) {
@@ -83,6 +93,11 @@ function copyToClipboard(x,y) {
     }), 1e3)
 }
 {% endhighlight %}
+
+Now lets copy all our static content to the <mark>dist</mark>  directory.
+I have various css,images,javascript that will be used in various app inside my django application.
+
+Below are the files i copied.
 
 {% highlight console %}
 vikki@vikki-ericsson-210319:/mnt/vikki/github/tools/npm$ tree .
@@ -112,16 +127,41 @@ vikki@vikki-ericsson-210319:/mnt/vikki/github/tools/npm$ tree .
 └── README.md
 {% endhighlight %}
 
+Now we are all set, lets connect to NPN and publish our package.
+
+> You should already have an account in NPN to publish.
+
 {% highlight console %}
 #npm login
 #npm publish
 {% endhighlight %}
 
+That's it. Now we have the package published in NPN.
+
+Unpkg and Jsdelivr 
+Lets try to access it using unpkg. Open your browser and enter the url in the below format.
+
+<mark>https://unpkg.com/[pacakagename]/</mark>
+
+My package name is *vikki-tools* so the format will be https://unpkg.com/vikki-tools<mark>/</mark>.
+
+> The leading <mark> / </mark> at the end of the URL is important.
+
+![unpkg screenshot](/content/images/2020/unpkg_vikki_tools.jpg)
+
 unpkg.com/:package@:version/:file
-<script src="https://unpkg.com/selector-library@1.0.6/selector.js"></script>
-<script src="https://unpkg.com/selector-library"></script>
-<script src="https://cdn.jsdelivr.net/npm/package-name"></script>
+
+{% highlight html %}
+<script src="https://unpkg.com/vikki-tools@1.0.3/dist/index.js"></script>
+<link href="https://unpkg.com/vikki-tools@1.0.3/dist/base64/css/base64_dark.css" rel="stylesheet">
+{% endhighlight %}
+
+## Auto minified version from jsdelivr
+
+
 https://cdn.jsdelivr.net/npm/vikki-tools@1.0.3/dist/index.min.js
 https://unpkg.com/vikki-tools/
 
-![unpkg screenshot](/content/images/2020/unpkg_vikki_tools.jpg)
+## Demo video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XMSV5J4jxSo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
