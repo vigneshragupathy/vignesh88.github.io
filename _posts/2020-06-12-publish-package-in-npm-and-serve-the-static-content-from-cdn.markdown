@@ -6,6 +6,7 @@ tags:
 - linux
 - opensource
 author: Vignesh Ragupathy
+comments: true
 ---
 
 ![](/content/images/cover/npm.jpg)
