@@ -76,7 +76,7 @@ license: (ISC)
 About to write to /home/vikki/npm/package.json:
 
 {% endhighlight %}
-{% highlight json %}
+{% highlight json linenos %}
 {
   "name": "vikki-tools",
   "version": "1.0.7",
@@ -114,7 +114,7 @@ I added a javascript function that will be used to copy text to clipboard.
 vim dist/index.js
 {% endhighlight %}
 
-{% highlight javascript %}
+{% highlight javascript linenos %}
 function copyToClipboard(x,y) {
     if( document.getElementById(x).value) {
         data_2_copy = document.getElementById(x).value;
@@ -219,7 +219,7 @@ My package name is *vikki-tools* so the format will be [https://unpkg.com/vikki-
 
 We can now load the static content from NPM in our website.
 
-{% highlight html %}
+{% highlight html linenos %}
 <script src="https://unpkg.com/vikki-tools@1.0.3/dist/index.js"></script>
 <link href="https://unpkg.com/vikki-tools@1.0.3/dist/base64/css/base64_dark.css" rel="stylesheet">
 {% endhighlight %}
@@ -228,7 +228,7 @@ We can now load the static content from NPM in our website.
 
 We can also use Jsdelivr instead of unpkg.
 
-{% highlight html %}
+{% highlight html linenos %}
 <script src="https://cdn.jsdelivr.net/npm/vikki-tools@1.0.3/dist/index.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/vikki-tools@1.0.3/dist/base64/css/base64_dark.css" rel="stylesheet">
 {% endhighlight %}
@@ -238,7 +238,7 @@ We can also use Jsdelivr instead of unpkg.
 Jsdelivr also provide the auto minified version of the CSS and Javascript from NPM.
 If you want to use minified version css and js, just add  <mark>.min</mark> extension to the filename
 
-{% highlight html %}
+{% highlight html linenos %}
 <script src="https://cdn.jsdelivr.net/npm/vikki-tools@1.0.3/dist/index.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/vikki-tools@1.0.3/dist/base64/css/base64_dark.min.css" rel="stylesheet">
 {% endhighlight %}
