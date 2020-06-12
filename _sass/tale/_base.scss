@@ -12,11 +12,13 @@ body {
 
 html {
   font-family: $serif-primary;
-  font-size: 14px;
+  //font-size: 14px;
+  font-size: 120%;
   overflow-y: scroll;
 
   @media (min-width: 600px) {
-    font-size: 16px;
+    //font-size: 16px;
+    font-size: 120%;
   }
 }
 
@@ -41,7 +43,8 @@ a {
 }
 
 blockquote {
-  border-left: .25rem solid $grey-2;
+  //border-left: .25rem solid $grey-2;
+  border-left: .25rem solid $blue;
   color: $grey-1;
   margin: .8rem 0;
   padding: .5rem 1rem;
