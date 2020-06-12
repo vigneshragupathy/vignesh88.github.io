@@ -212,7 +212,7 @@ My package name is *vikki-tools* so the format will be [https://unpkg.com/vikki-
 
 ### Screenshot from browser
 
-![unpkg screenshot](/content/images/2020/unpkg_vikki_tools.jpg)
+![unpkg screenshot](/content/images/2020/screenshot_vikki_tools.jpg)
 
 ## Using Unpkg to serve static content in website
 
