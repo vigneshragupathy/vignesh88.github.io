@@ -20,7 +20,8 @@ layout: default
     <span>[
       {% for tag in page.tags %}
         {% capture tag_name %}{{ tag }}{% endcapture %}
-        <a href="/tag/{{ tag_name }}"><code class="highligher-rouge"><nobr>{{ tag_name }}</nobr></code>&nbsp;</a>
+        <!--<a href="/tag/{{ tag_name }}"><code class="highligher-rouge"><nobr>{{ tag_name }}</nobr></code>&nbsp;</a>-->
+        <a href="/tag/{{ tag_name }}"><mark style="border-radius: .25em;   padding:.2em .6em .3em;font-size: 75%;"><nobr>{{ tag_name }}</nobr></mark>&nbsp;</a>
       {% endfor %}
     ]</span> 
   </div>
@@ -31,7 +32,7 @@ layout: default
 
   {{ content }}
 </div>
-
+{% include share-buttons.html %}
 {% if page.comments %}
   {% include disqus_comments.html %}
 {% endif %}
