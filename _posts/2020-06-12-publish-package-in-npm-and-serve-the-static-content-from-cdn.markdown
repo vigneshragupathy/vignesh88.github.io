@@ -7,16 +7,17 @@ tags:
 - opensource
 author: Vignesh Ragupathy
 comments: true
+image: /content/images/cover/npm.jpg
 ---
 
 ![](/content/images/cover/npm.jpg)
 *Photo by [Vignesh Ragupathy](https://photography.vikki.in/vikki-photography-budapest-3){:target="_blank"}.*
 
-I been utilizing AWS to have my personal blog for almost 3 years now. Originaly my blog was hosted in wordpress and then i migrated to [ghost](https://ghost.org/){:target="_blank"}. Its been 2 years now in ghost and I thought of exploring new hosting option which should be free, supports custom domain name and free [SSL](https://letsencrypt.org/){:target="_blank"}.
+I been utilizing AWS to host my personal blog for almost 3 years now. Originally my blog was hosted in WordPress and then i migrated to [ghost](https://ghost.org/){:target="_blank"}. Its been 2 years now in ghost and I thought of exploring new hosting option which should be free, supports custom domain name and free [SSL](https://letsencrypt.org/){:target="_blank"}.
 
-[Jekyll](https://jekyllrb.com/){:target="_blank"} is a ruby based static blog generator and it has an advantage of free hosting in github. The letsencrypt SSL certificate is also provided by github for my custom domain so i don’t have to worry about managing it.
+[Jekyll](https://jekyllrb.com/){:target="_blank"} is a ruby based static blog generator and it has an advantage of free hosting in GitHub. The letsencrypt SSL certificate is also provided by GitHub for my custom domain so i don’t have to worry about managing it.
 
-I also created a separate [website](https://tools.vikki.in){:target="_blank"} to showcase my open-source tools and i can use the same AWS instance for hosting it. It is a Django application which uses more memory/cpu so i can run it dedicated instance instead of running the ghost and django together.
+I also created a separate [website](https://tools.vikki.in){:target="_blank"} to showcase my open-source tools and i can use the same AWS instance for hosting it. It is a Django application which uses more memory/CPU, so i can run it in a dedicated instance instead of running the ghost and Django together.
 
 One of the challenge in Django application is hosting your static content. Django recommends to use a proxy server like Nginx to server its static content.
 
@@ -30,7 +31,7 @@ location /static/ {
     }
 {% endhighlight %}
 
-After doing some reasearch I chose to utilize unpkg or jsdelivr for my site.
+After doing some research I chose to utilize unpkg or jsdelivr for my site.
 
 > unpkg and jsdeliver are global CDN and they can be used to deliver any pacakges hosted in NPM
 
@@ -133,7 +134,7 @@ function copyToClipboard(x,y) {
 
 ### 4. Copy all your static content to dist directory
 
-Now lets copy all our static content to the <mark>dist</mark>  directory.
+Now lets copy all our static content to the <mark>dist</mark> directory.
 I have various css,images,javascript that will be used in various app inside my django application.
 
 Below are the files which i copied.
@@ -236,7 +237,7 @@ We can also use Jsdelivr instead of unpkg.
 ## Auto minified version from jsdelivr
 
 Jsdelivr also provide the auto minified version of the CSS and Javascript from NPM.
-If you want to use minified version css and js, just add  <mark>.min</mark> extension to the filename
+If you want to use minified version css and js, just add <mark>.min</mark> extension to the filename
 
 {% highlight html linenos %}
 <script src="https://cdn.jsdelivr.net/npm/vikki-tools@1.0.3/dist/index.min.js"></script>
