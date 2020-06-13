@@ -42,7 +42,7 @@ So first we should have the static content published in [NPM](https://www.npmjs.
 
 ### 1. Create the directory for adding packages for NPM
 
-{% highlight bash %}
+{% highlight console %}
 mkdir npm
 mkdir npm/dist
 cd npm
@@ -50,7 +50,7 @@ cd npm
 
 ### 2. Create a package.json file for your pacakage
 
-{% highlight bash %}
+{% highlight console %}
 npm init
 {% endhighlight %}
 
@@ -61,7 +61,7 @@ It only covers the most common items, and tries to guess sensible defaults.
 See `npm help json` for definitive documentation on these fields
 and exactly what they do.
 
-Use `npm install <pkg>` afterwards to install a package and
+Use `npm install pkg` afterwards to install a package and
 save it as a dependency in the package.json file.
 
 Press ^C at any time to quit.
@@ -140,7 +140,7 @@ I have various css,images,javascript that will be used in various app inside my 
 Below are the files which i copied.
 
 {% highlight console %}
-vikki@vikki-ericsson-210319:/mnt/vikki/github/tools/npm$ tree .
+tree .
 .
 ├── dist
 │   ├── admin
@@ -174,7 +174,8 @@ Now we are all set, lets connect to NPM and publish our package.
 > You should already have an account in NPM to publish.
 
 {% highlight console %}
-vikki@vikki-ericsson-210319:~npm$ npm publish
+npm publish
+
 npm notice
 npm notice package: vikki-tools@1.0.7
 npm notice === Tarball Contents ===
