@@ -24,3 +24,61 @@ mark {
   padding-bottom: 1rem;
   justify-content: center;
 }
+
+#navbar {
+  //background-color: grey;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: block;
+  transition: top 0.3s;
+  background-color: rgba(255,255,255,.9);
+  box-shadow: 0 2px 2px -2px $shadow-color;
+  overflow: auto;
+
+  &-container {
+    margin: 1rem auto;
+    position: relative;
+    text-align: center;
+  }
+  &-title {
+    @include transition(all .2s ease-out);
+    color: $default-color;
+    display: inline-block;
+    margin: 0;
+    padding-right: .2rem;
+
+    &:hover,
+    &:focus {
+      opacity: .6;
+    }
+  }
+  ul {
+    list-style-type: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  li {
+    @include transition(all .2s ease-out);
+    color: $default-color;
+    display: inline-block;
+    opacity: .6;
+    padding: 0 2rem 0 0;
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  a {
+    color: $default-color;
+    font-family: $sans-serif;
+  }
+}
