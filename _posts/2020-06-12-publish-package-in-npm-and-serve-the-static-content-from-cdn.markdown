@@ -13,13 +13,13 @@ image: /content/images/cover/npm.jpg
 ![](/content/images/cover/npm.jpg)
 *Photo by [Vignesh Ragupathy](https://photography.vikki.in/vikki-photography-budapest-3){:target="_blank"}.*
 
-I been utilizing AWS to host my personal blog for almost 3 years now. Originally my blog was hosted in WordPress and then i migrated to [ghost](https://ghost.org/){:target="_blank"}. Its been 2 years now in ghost and I thought of exploring new hosting option which should be free, supports custom domain name and free [SSL](https://letsencrypt.org/){:target="_blank"}.
+I have been utilizing AWS to host my personal blog for almost 3 years now. Originally my blog was hosted in WordPress and then I migrated to [ghost](https://ghost.org/){:target="_blank"}. It's been 2 years now in ghost and I thought of exploring a new hosting option which should be free, supports custom domain name and free [SSL](https://letsencrypt.org/){:target="_blank"}.
 
 [Jekyll](https://jekyllrb.com/){:target="_blank"} is a ruby based static blog generator and it has an advantage of free hosting in GitHub. The letsencrypt SSL certificate is also provided by GitHub for my custom domain so i don’t have to worry about managing it.
 
-I also created a separate [website](https://tools.vikki.in){:target="_blank"} to showcase my open-source tools and i can use the same AWS instance for hosting it. It is a Django application which uses more memory/CPU, so i can run it in a dedicated instance instead of running the ghost and Django together.
+I also created a separate [website](https://tools.vikki.in){:target="_blank"} to showcase my open-source tools and I can use the same AWS instance for hosting it. It is a Django application which uses more memory/CPU, so i can run it in a dedicated instance instead of running the ghost and Django together.
 
-One of the challenge in Django application is hosting your static content. Django recommends to use a proxy server like Nginx to server its static content.
+One of the challenges in a Django application is hosting your static content. Django recommends using a proxy server like Nginx to serve its static content.
 
 I use my nginx proxy to serve the static content. But due to performance reason , i started to explore the free CDN to serve my static content
 
@@ -27,18 +27,18 @@ Below is the nginx configuration snippet for mapping static content.
 
 {% highlight console %}
 location /static/ {
-        root /tools.vikki.in/static;
-    }
+        root /tools.vikki.in/static;
+    }
 {% endhighlight %}
 
 After doing some research I chose to utilize unpkg or jsdelivr for my site.
 
-> unpkg and jsdeliver are global CDN and they can be used to deliver any pacakges hosted in NPM
+> unpkg and jsdelivr are global CDN and they can be used to deliver any packages hosted in NPM
 
 [unpkg](https://unpkg.com/){:target="_blank"} and [jsdelivr](https://www.jsdelivr.com/){:target="_blank"} both provides CDN for the content hosted in NPM.
 So first we should have the static content published in [NPM](https://www.npmjs.com/){:target="_blank"}.
 
-## NPM Pacakage creation
+## NPM Package creation
 
 ### 1. Create the directory for adding packages for NPM
 
@@ -48,7 +48,7 @@ mkdir npm/dist
 cd npm
 {% endhighlight %}
 
-### 2. Create a package.json file for your pacakage
+### 2. Create a package.json file for your package
 
 {% highlight console %}
 npm init
@@ -79,27 +79,27 @@ About to write to /home/vikki/npm/package.json:
 {% endhighlight %}
 {% highlight json linenos %}
 {
-  "name": "vikki-tools",
-  "version": "1.0.7",
-  "description": "Libraries for https://tools.vikki.in",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vignesh88/tools.git"
-  },
-  "keywords": [
-    "vikki",
-    "tools"
-  ],
-  "author": "Vignesh Ragupathy",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vignesh88/tools/issues"
-  },
-  "homepage": "https://github.com/vignesh88/tools#readme"
+  "name": "vikki-tools",
+  "version": "1.0.7",
+  "description": "Libraries for https://tools.vikki.in",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vignesh88/tools.git"
+  },
+  "keywords": [
+    "vikki",
+    "tools"
+  ],
+  "author": "Vignesh Ragupathy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vignesh88/tools/issues"
+  },
+  "homepage": "https://github.com/vignesh88/tools#readme"
 }
 {% endhighlight %}
 {% highlight console %}
@@ -117,18 +117,18 @@ vim dist/index.js
 
 {% highlight javascript linenos %}
 function copyToClipboard(x,y) {
-    if( document.getElementById(x).value) {
-        data_2_copy = document.getElementById(x).value;
-    } else {
-        data_2_copy = document.getElementById(x).innerText;
-    }
+    if( document.getElementById(x).value) {
+        data_2_copy = document.getElementById(x).value;
+    } else {
+        data_2_copy = document.getElementById(x).innerText;
+    }
 
-    var e = document.createElement("textarea");
-    e.style.opacity = "0", e.style.position = "fixed", e.textContent = data_2_copy;
-    var t = document.getElementsByTagName("body")[0];
-    t.appendChild(e), e.select(), document.execCommand("copy"), t.removeChild(e), $(y).show(), setTimeout((function () {
-        $(y).hide()
-    }), 1e3)
+    var e = document.createElement("textarea");
+    e.style.opacity = "0", e.style.position = "fixed", e.textContent = data_2_copy;
+    var t = document.getElementsByTagName("body")[0];
+    t.appendChild(e), e.select(), document.execCommand("copy"), t.removeChild(e), $(y).show(), setTimeout((function () {
+        $(y).hide()
+    }), 1e3)
 }
 {% endhighlight %}
 
@@ -152,24 +152,24 @@ tree .
 │   │   │   ├── geoip_dark.css
 │   │   │   └── geoip_light.css
 │   │   └── js
-│   │       └── geoip.js
+│   │       └── geoip.js
 │   ├── index.js
 │   └── password_generator
-│       ├── css
-│       │   ├── password_generator_dark.css
-│       │   └── password_generator_light.css
-│       ├── img
-│       │   ├── copy-full.svg
-│       │   └── regenerate.svg
-│       └── js
-│           └── password_generator.js
+│       ├── css
+│       │   ├── password_generator_dark.css
+│       │   └── password_generator_light.css
+│       ├── img
+│       │   ├── copy-full.svg
+│       │   └── regenerate.svg
+│       └── js
+│           └── password_generator.js
 ├── package.json
 └── README.md
 {% endhighlight %}
 
 ### 5. Publish you static content as package in NPM
 
-Now we are all set, lets connect to NPM and publish our package.
+Now we are all set, let's connect to NPM and publish our package.
 
 > You should already have an account in NPM to publish.
 
@@ -179,27 +179,27 @@ npm publish
 npm notice
 npm notice package: vikki-tools@1.0.7
 npm notice === Tarball Contents ===
-npm notice 1.1kB   dist/admin/img/LICENSE
-npm notice 8.4kB   dist/admin/css/autocomplete.css
-npm notice 16.4kB  dist/admin/css/base.css
-npm notice 698B    dist/base64/css/base64_dark.css
-npm notice 159B    dist/base64/css/base64_light.css
-npm notice 85.9kB  dist/admin/fonts/Roboto-Regular-webfont.woff
+npm notice 1.1kB   dist/admin/img/LICENSE
+npm notice 8.4kB   dist/admin/css/autocomplete.css
+npm notice 16.4kB  dist/admin/css/base.css
+npm notice 698B    dist/base64/css/base64_dark.css
+npm notice 159B    dist/base64/css/base64_light.css
+npm notice 85.9kB  dist/admin/fonts/Roboto-Regular-webfont.woff
 npm notice === Tarball Details ===
-npm notice name:          vikki-tools
-npm notice version:       1.0.7
-npm notice package size:  1.1 MB
+npm notice name:          vikki-tools
+npm notice version:       1.0.7
+npm notice package size:  1.1 MB
 npm notice unpacked size: 3.9 MB
-npm notice shasum:        a9153c3a9bb68bc34d5040d2088a5b95a256e4cc
-npm notice integrity:     sha512-zynWl1/pL0Wvk[...]k3yhkCzBz7+0A==
-npm notice total files:   188
+npm notice shasum:        a9153c3a9bb68bc34d5040d2088a5b95a256e4cc
+npm notice integrity:     sha512-zynWl1/pL0Wvk[...]k3yhkCzBz7+0A==
+npm notice total files:   188
 npm notice
 + vikki-tools@1.0.7
 {% endhighlight %}
 
 That's it. Now we have the package published in NPM.
 
-> Unpkg and Jsdelivr provides CDN for NPM packages without any configuration.
+> Unpkg and Jsdelivr provide CDN for NPM packages without any configuration.
 
 ### 6. Verify published package in NPM
 
@@ -219,7 +219,7 @@ My package name is *vikki-tools* so the format will be [https://unpkg.com/vikki-
 
 ## Using Unpkg to serve static content in website
 
-We can now load the static content from NPM in our website.
+We can now load the static content from NPM on our website.
 
 {% highlight html linenos %}
 <script src="https://unpkg.com/vikki-tools@1.0.3/dist/index.js"></script>
@@ -237,7 +237,7 @@ We can also use Jsdelivr instead of unpkg.
 
 ## Auto minified version from jsdelivr
 
-Jsdelivr also provide the auto minified version of the CSS and Javascript from NPM.
+Jsdelivr also provides the auto minified version of the CSS and Javascript from NPM.
 If you want to use minified version css and js, just add <mark>.min</mark> extension to the filename
 
 {% highlight html linenos %}
@@ -247,7 +247,7 @@ If you want to use minified version css and js, just add <mark>.min</mark> exten
 
 ## Script to automatically update the static and CDN URL in Django
 
-For ease, i created a script to automatically update all static content in your template directory in Django application.
+For ease, I created a script to automatically update all static content in your template directory in the Django application.
 
 The code is available in the [Github URL](https://github.com/vignesh88/tools/blob/master/vikki_scripts/update_static_to_cdn.py){:target="_blank"}
 
