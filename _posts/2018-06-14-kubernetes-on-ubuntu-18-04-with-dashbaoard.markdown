@@ -14,6 +14,8 @@ comments: true
 
 This post i am going to show how to install Kubernetes, configure Master node and enable Kubernetes dashboard in Ubuntu 18.04 LTS. I also tried to show the &nbsp;video demo explaining the entire configuration in the end of this post, This is my first video demo!!!
 
+> This post has been updated for kubernetes <mark>version 1.18</mark>
+
 ### Setup
 
 I am using the Virtualbox(running in Ubuntu 18.04 physical machine) for this entire setup . The physical machine is Dell inspiron laptop with 12GB RAM , Intel® Core™ i7-6500U CPU @ 2.50GHz × 4 and 512GB SSD hardisk.
@@ -77,73 +79,83 @@ sudo swapoff -a
 
 {% endhighlight %}
 
-My IP address of the VM is 192.168.1.5 which i am going to advertise &nbsp;as apiserver and 40.168.0.0/16 is the newtwork for pod communication
+My IP address of the VM is 10.0.0.1 which i am going to advertise &nbsp;as apiserver and 40.168.0.0/16 is the newtwork for pod communication
 
 {% highlight console %}
 
-sudo kubeadm init --pod-network-cidr=40.168.0.0/16 --apiserver-advertise-address=192.168.1.5
+sudo kubeadm init --pod-network-cidr=40.168.0.0/16 --apiserver-advertise-address=10.0.0.1
 
-[init] Using Kubernetes version: v1.10.4
-[init] Using Authorization modes: [Node RBAC]
-[preflight] Running pre-flight checks.
-    [WARNING SystemVerification]: docker version is greater than the most recently validated version. Docker version: 17.12.1-ce. Max validated version: 17.03
-    [WARNING FileExisting-crictl]: crictl not found in system path
-Suggestion: go get github.com/kubernetes-incubator/cri-tools/cmd/crictl
-[preflight] Starting the kubelet service
-[certificates] Generated ca certificate and key.
-[certificates] Generated apiserver certificate and key.
-[certificates] apiserver serving cert is signed for DNS names [drona-child-1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 192.168.1.5]
-[certificates] Generated apiserver-kubelet-client certificate and key.
-[certificates] Generated sa key and public key.
-[certificates] Generated front-proxy-ca certificate and key.
-[certificates] Generated front-proxy-client certificate and key.
-[certificates] Generated etcd/ca certificate and key.
-[certificates] Generated etcd/server certificate and key.
-[certificates] etcd/server serving cert is signed for DNS names [localhost] and IPs [127.0.0.1]
-[certificates] Generated etcd/peer certificate and key.
-[certificates] etcd/peer serving cert is signed for DNS names [drona-child-1] and IPs [192.168.1.5]
-[certificates] Generated etcd/healthcheck-client certificate and key.
-[certificates] Generated apiserver-etcd-client certificate and key.
-[certificates] Valid certificates and keys now exist in "/etc/kubernetes/pki"
-[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/admin.conf"
-[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/kubelet.conf"
-[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/controller-manager.conf"
-[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/scheduler.conf"
-[controlplane] Wrote Static Pod manifest for component kube-apiserver to "/etc/kubernetes/manifests/kube-apiserver.yaml"
-[controlplane] Wrote Static Pod manifest for component kube-controller-manager to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
-[controlplane] Wrote Static Pod manifest for component kube-scheduler to "/etc/kubernetes/manifests/kube-scheduler.yaml"
-[etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
-[init] Waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests".
-[init] This might take a minute or longer if the control plane images have to be pulled.
-[apiclient] All control plane components are healthy after 21.503420 seconds
-[uploadconfig] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
-[markmaster] Will mark node drona-child-1 as master by adding a label and a taint
-[markmaster] Master drona-child-1 tainted and labelled with key/value: node-role.kubernetes.io/master=""
-[bootstraptoken] Using token: o9an7t.o4bs1up74xjwnol3
-[bootstraptoken] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
-[bootstraptoken] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
-[bootstraptoken] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
-[bootstraptoken] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
-[addons] Applied essential addon: kube-dns
+W0624 14:54:54.575835    4007 configset.go:202] WARNING: kubeadm cannot validate component configs for API groups [kubelet.config.k8s.io kubeproxy.config.k8s.io]
+[init] Using Kubernetes version: v1.18.4
+[preflight] Running pre-flight checks
+	[WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Starting the kubelet
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [kubernetes1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 10.0.0.1]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [kubernetes1 localhost] and IPs [10.0.0.1 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [kubernetes1 localhost] and IPs [10.0.0.1 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+W0624 14:57:38.087288    4007 manifests.go:225] the default kube-apiserver authorization-mode is "Node,RBAC"; using "Node,RBAC"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+W0624 14:57:38.089706    4007 manifests.go:225] the default kube-apiserver authorization-mode is "Node,RBAC"; using "Node,RBAC"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+[apiclient] All control plane components are healthy after 21.003160 seconds
+[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config-1.18" in namespace kube-system with the configuration for the kubelets in the cluster
+[upload-certs] Skipping phase. Please see --upload-certs
+[mark-control-plane] Marking the node kubernetes1 as control-plane by adding the label "node-role.kubernetes.io/master=''"
+[mark-control-plane] Marking the node kubernetes1 as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[bootstrap-token] Using token: u9ibqd.0x3nkr0lze6o5d7u
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+[addons] Applied essential addon: CoreDNS
 [addons] Applied essential addon: kube-proxy
 
-Your Kubernetes master has initialized successfully!
+Your Kubernetes control-plane has initialized successfully!
 
 To start using your cluster, you need to run the following as a regular user:
 
-    mkdir -p $HOME/.kube
-    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 You should now deploy a pod network to the cluster.
 Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-    https://kubernetes.io/docs/concepts/cluster-administration/addons/
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
 
-You can now join any number of machines by running the following on each node
-as root:
+Then you can join any number of worker nodes by running the following on each as root:
 
-    kubeadm join 192.168.1.5:6443 --token o9an7t.o4bs1up74xjwnol3 --discovery-token-ca-cert-hash sha256:548c922cf4f845f3dc6d7da407516652879c8a5085c87e0322770e1475105591
-
+kubeadm join 10.0.0.1:6443 --token u9ibqd.0x3nkr0lze6o5d7u \
+    --discovery-token-ca-cert-hash sha256:9669e0ef3814e40ab4a3c2c85a450635ad6c75c25be931fdd064fda9fb9e7b89
 
 {% endhighlight %}
 
@@ -182,69 +194,78 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 {% endhighlight %}
 
-Now deploy the network for pod communications , i am using the flannel networking
+Now deploy the network for pod communications , i am using the calico networking
 
 {% highlight console %}
 
-sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+sudo kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
 
-clusterrole.rbac.authorization.k8s.io "flannel" created
-clusterrolebinding.rbac.authorization.k8s.io "flannel" created
-serviceaccount "flannel" created
-configmap "kube-flannel-cfg" created
-daemonset.extensions "kube-flannel-ds" created
+configmap/calico-config created
+customresourcedefinition.apiextensions.k8s.io/bgpconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/bgppeers.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/blockaffinities.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/clusterinformations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/felixconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/globalnetworkpolicies.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/globalnetworksets.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/hostendpoints.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamblocks.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamconfigs.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamhandles.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ippools.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/kubecontrollersconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/networkpolicies.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/networksets.crd.projectcalico.org created
+clusterrole.rbac.authorization.k8s.io/calico-kube-controllers created
+clusterrolebinding.rbac.authorization.k8s.io/calico-kube-controllers created
+clusterrole.rbac.authorization.k8s.io/calico-node created
+clusterrolebinding.rbac.authorization.k8s.io/calico-node created
+daemonset.apps/calico-node created
+serviceaccount/calico-node created
+deployment.apps/calico-kube-controllers created
+serviceaccount/calico-kube-controllers created
+
 {% endhighlight %}
 
-Now wait fo kube-flanner-X to change to "Running" status. At this point all the pods should be in running status.
+Now wait for all pods to change to "Running" status. At this point all the pods should be in running status.
 
 {% highlight console %}
 
 sudo kubectl get pods --all-namespaces
+NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE
+kube-system   calico-kube-controllers-76d4774d89-mfjdf   0/1     Running   0          7m29s
+kube-system   calico-node-lfz6b                          1/1     Running   0          7m29s
+kube-system   coredns-66bff467f8-kg47r                   1/1     Running   0          8m15s
+kube-system   coredns-66bff467f8-mbl88                   1/1     Running   0          8m16s
+kube-system   etcd-kubernetes1                           1/1     Running   1          8m24s
+kube-system   kube-apiserver-kubernetes1                 1/1     Running   1          8m24s
+kube-system   kube-controller-manager-kubernetes1        1/1     Running   1          8m24s
+kube-system   kube-proxy-t2rmj                           1/1     Running   1          8m16s
+kube-system   kube-scheduler-kubernetes1                 1/1     Running   1          8m24s
 
-NAMESPACE NAME READY STATUS RESTARTS AGE
-kube-system etcd-drona-child-1 1/1 Running 0 2m
-kube-system kube-apiserver-drona-child-1 1/1 Running 0 1m
-kube-system kube-controller-manager-drona-child-1 1/1 Running 0 2m
-kube-system kube-dns-86f4d74b45-lzzvv 3/3 Running 0 2m
-kube-system kube-flannel-ds-z5fkj 1/1 Running 0 1m
-kube-system kube-proxy-k4qv7 1/1 Running 0 2m
-kube-system kube-scheduler-drona-child-1 1/1 Running 0 2m
 {% endhighlight %}
 
-Once the flannel network is deployed , we can verify the flannel interface for the &nbsp;ip address assigned
-
-{% highlight console %}
-
-ip a show flannel.1
-
-5: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default 
-    link/ether de:ab:2a:c3:7a:25 brd ff:ff:ff:ff:ff:ff
-    inet 40.168.0.0/32 scope global flannel.1
-        valid_lft forever preferred_lft forever
-    inet6 fe80::dcab:2aff:fec3:7a25/64 scope link 
-        valid_lft forever preferred_lft forever
-ip a show cni0
-6: cni0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP group default qlen 1000
-    link/ether 0a:58:28:a8:00:01 brd ff:ff:ff:ff:ff:ff
-    inet 40.168.0.1/24 scope global cni0
-        valid_lft forever preferred_lft forever
-    inet6 fe80::44ee:1cff:fe91:35b2/64 scope link 
-        valid_lft forever preferred_lft forever
-{% endhighlight %}
 
 Now deploy the kubernetes dashoard. Kubernetes dashboard is used to manage the kubernetes cluster using the web GUI interface.
 
 {% highlight console %}
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
 
-secret "kubernetes-dashboard-certs" created
-serviceaccount "kubernetes-dashboard" created
-role.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
-rolebinding.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
-deployment.apps "kubernetes-dashboard" created
-service "kubernetes-dashboard" created
-
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+deployment.apps/dashboard-metrics-scraper created
 
 {% endhighlight %}
 
@@ -253,21 +274,22 @@ Wait for kubernetes-dashboard-xxxx pods to goes "Running" status
 {% highlight console %}
 
 sudo kubectl get pods --all-namespaces
-
-NAMESPACE NAME READY STATUS RESTARTS AGE
-kube-system etcd-drona-child-1 1/1 Running 0 3m
-kube-system kube-apiserver-drona-child-1 1/1 Running 0 3m
-kube-system kube-controller-manager-drona-child-1 1/1 Running 0 3m
-kube-system kube-dns-86f4d74b45-lzzvv 3/3 Running 0 4m
-kube-system kube-flannel-ds-z5fkj 1/1 Running 0 2m
-kube-system kube-proxy-k4qv7 1/1 Running 0 4m
-kube-system kube-scheduler-drona-child-1 1/1 Running 0 3m
-kube-system kubernetes-dashboard-7d5dcdb6d9-d6lvt 1/1 Running 0 39s
-
+NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE
+kube-system            calico-kube-controllers-76d4774d89-mfjdf     1/1     Running   0          10m
+kube-system            calico-node-lfz6b                            1/1     Running   0          10m
+kube-system            coredns-66bff467f8-kg47r                     1/1     Running   0          11m
+kube-system            coredns-66bff467f8-mbl88                     1/1     Running   0          11m
+kube-system            etcd-kubernetes1                             1/1     Running   1          11m
+kube-system            kube-apiserver-kubernetes1                   1/1     Running   1          11m
+kube-system            kube-controller-manager-kubernetes1          1/1     Running   1          11m
+kube-system            kube-proxy-t2rmj                             1/1     Running   1          11m
+kube-system            kube-scheduler-kubernetes1                   1/1     Running   1          11m
+kubernetes-dashboard   dashboard-metrics-scraper-6b4884c9d5-j757b   1/1     Running   0          51s
+kubernetes-dashboard   kubernetes-dashboard-7b544877d5-pklbm        1/1     Running   0          52s
 
 {% endhighlight %}
 
-Once the kubernetes-dashboard-xxxxxxx container goes to "Running" state we can start teh kubectly proxy with the below command. If you want to start only in localhost then you can change the address option to localhost
+Once the kubernetes-dashboard-xxxxxxx container goes to "Running" state we can start the kubectly proxy with the below command. If you want to start only in localhost then you can change the address option to localhost
 
 {% highlight console %}
 
@@ -278,9 +300,9 @@ Starting to serve on [::]:8001
 
 Now open the below kubernetes dashboard URL in browser
 
-[http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/).
+[http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
-<!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="/content/images/2018/06/vikki_kubernetes_dashboard_2.jpg" class="kg-image" alt="vikki_kubernetes_dashboard_2"></figure><!--kg-card-end: image-->
+![](/content/images/2018/06/kubernetes_dashboard_home.png)
 
 To properly login to the kubernetes dashboard we need to creat a service account and assign the proper role.
 
