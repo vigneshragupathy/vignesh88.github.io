@@ -174,6 +174,15 @@ Now we are all set, let's connect to NPM and publish our package.
 > You should already have an account in NPM to publish.
 
 {% highlight console %}
+npm login
+Username: r_vignesh
+Password: 
+Email: (this IS public) me@vikki.in
+Logged in as r_vignesh on https://registry.npmjs.org/.
+{% endhighlight %}
+
+
+{% highlight console %}
 npm publish
 
 npm notice
