@@ -258,7 +258,7 @@ If you want to use minified version css and js, just add <mark>.min</mark> exten
 
 For ease, I created a script to automatically update all static content in your template directory in the Django application.
 
-The code is available in the [Github URL](https://github.com/vignesh88/tools/blob/master/vikki_scripts/update_static_to_cdn.py){:target="_blank"}
+The code is available in the [Github URL](https://github.com/vignesh88/tools/blob/master/vikki_scripts/django_template_static_to_cdn.py){:target="_blank"}
 
 ## Demo video
 
