@@ -31,15 +31,13 @@ Below is the pin diagram of the raspberry pi B+ model
 
 We are going to use the GPIO pin 4 and a ground to programably control the led. Connect resistor and led as per the below diagram.
 
-blog.vikki.in\_led\_blink
-
 Once the circuit is ready we can power on the raspberry pi and connect to pi using SSH or VNC.
 
 Below is my final assembled circuit.
 
 <!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="/content/images/2017/11/blog.vikki_.in_led_pi.jpg" class="kg-image" alt="blog.vikki_.in_led_pi"></figure><!--kg-card-end: image-->
 
-Blinking LED from raspberry pi
+### Blinking LED from raspberry pi
 
 Connect to raspberry pi using ssh or vnc, open vim and copy paste the below code and save it. But default vim don’t support syntax highlight in raspbian os,So modify the “vimrc” to enable syntax highlighting.
 
@@ -95,7 +93,7 @@ except KeyboardInterrupt:
 
 Now run the python code and verify the LED start blinking.
 
-Demo of LED blinking from raspberry pi:
+### Demo of LED blinking from raspberry pi:
 
 <!--kg-card-begin: embed--><figure class="kg-card kg-embed-card"><iframe width="480" height="270" src="https://www.youtube.com/embed/DnotTLN2qI8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></figure><!--kg-card-end: embed-->
 ### Blinking LED in morse for user input:
