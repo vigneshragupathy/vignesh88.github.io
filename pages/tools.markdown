@@ -7,6 +7,8 @@ permalink: /tools/
 
 This page will list the tools developed by me
 
+[URL Shortner](https://tools.vikki.in/tiny)
+
 [Epoch datetime converter](https://tools.vikki.in/epoch.html)
 
 [Base64 converter](https://tools.vikki.in/base64.html)
@@ -14,4 +16,3 @@ This page will list the tools developed by me
 [Password generator](https://tools.vikki.in/password_generator.html)
 
 [What is my IP ?](https://tools.vikki.in/geoip.html)
-
