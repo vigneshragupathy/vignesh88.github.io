@@ -31,7 +31,12 @@
 
   p {
     margin: 0 0 1rem;
-    text-align: justify;
+    //text-align: justify;
+    text-align: left;
+    font-family: $vikki-custom-font1;
+    font-size: large;
+
+
   }
 
   a:hover {
